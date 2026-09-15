@@ -1,0 +1,51 @@
+/* ==========================================================================
+   PISJ-ES MEDIA SOCIETY PRESENTATION - DESIGN TOKENS & VARIABLES
+   Neo-Brutalist Creative Media Studio Aesthetic
+   ========================================================================== */
+
+:root {
+  /* Core Canvas & Ink */
+  --bg-dark: #08090c;
+  --canvas: #fffdf5;
+  --paper: #ffffff;
+  --ink: #0f1013;
+  --ink-secondary: #3b3e45;
+  --ink-muted: #6b7280;
+  --grid-line: rgba(15, 16, 19, 0.05);
+
+  /* High-Voltage Creative Studio Accents */
+  --neon-yellow: #FFE600;
+  --neon-cyan: #00F0FF;
+  --neon-pink: #FF2E93;
+  --neon-green: #10B981;
+  --neon-acid: #CCFF00;
+  --neon-orange: #FF6600;
+  --neon-purple: #8B5CF6;
+  --danger-red: #EF4444;
+  --danger-bg: #FEF2F2;
+  --success-bg: #F0FDF4;
+
+  /* Architectural Borders & Hard Shadows */
+  --border-ultra: 4px solid var(--ink);
+  --border-thick: 3px solid var(--ink);
+  --border-mid: 2.5px solid var(--ink);
+  --border-thin: 1.5px solid var(--ink);
+  
+  --shadow-xs: 2px 2px 0px var(--ink);
+  --shadow-sm: 4px 4px 0px var(--ink);
+  --shadow-md: 7px 7px 0px var(--ink);
+  --shadow-lg: 12px 12px 0px var(--ink);
+  --shadow-hover: 10px 10px 0px var(--ink);
+  --shadow-pressed: 1px 1px 0px var(--ink);
+
+  /* Typography Stacks */
+  --font-display: 'Space Grotesk', -apple-system, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Cinema Aspect Ratio & Viewport */
+  --aspect-ratio: 16 / 9;
+  --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+

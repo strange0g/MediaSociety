@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PISJ-ES Media Society // Executive Presentation Deck</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,500;0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Space+Grotesk:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* ==========================================================================
+       NEO-BRUTALIST SYSTEM & VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-dark: #0a0b0e;
+      --canvas: #fffdf5;
+      --ink: #111215;
+      --paper: #ffffff;
+      
+      /* Vibrant Accents */
+      --yellow: #FFE600;
+      --pink: #FF3388;
+      --cyan: #00E5FF;
+      --green: #22C55E;
+      --acid: #CCFF00;
+      --orange: #FF6600;
+      --purple: #8B5CF6;
+      --danger: #EF4444;
+
+      /* Structural Borders & Hard Shadows */
+      --border-thick: 3.5px solid var(--ink);
+      --border-thin: 2px solid var(--ink);
+      --shadow-sm: 3px 3px 0px var(--ink);
+      --shadow-md: 6px 6px 0px var(--ink);
+      --shadow-lg: 10px 10px 0px var(--ink);
+
+      /* Typography */
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px),
+        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 28px 28px, 140px 140px;
+      font-family: var(--font-body);
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    /* Master Presentation Deck Frame (16:9 Cinema Aspect Ratio) */
+    .presentation-viewport {
+      position: relative;
+      width: 100%;
+      max-width: 1340px;
+      aspect-ratio: 16 / 9;
+      background: var(--canvas);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-lg);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top Status Bar */
+    .deck-topbar {
+      height: 48px;
+      background: var(--yellow);
+      border-bottom: var(--border-thick);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      z-index: 100;
+    }
+
+    .status-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mac-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+    }
+    .dot-1 { background: var(--pink); }
+    .dot-2 { background: var(--yellow); }
+    .dot-3 { background: var(--green); }
+
+    .live-pulse {
+      width: 10px;
+      height: 10px;
+      background: var(--danger);
+      border-radius: 50%;
+      border: 1.5px solid var(--ink);
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    /* Slides Stage */
+    .slides-stage {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      height: calc(100% - 48px - 56px);
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.97) translateY(8px);
+      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+      padding: 34px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--canvas);
+      background-image: 
+        linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+      z-index: 20;
+    }
+
+    /* ==========================================================================
+       BUILD-STEP & REVEAL SYSTEM (CLICKER DRIVEN)
+       ========================================================================== */
+    .step-reveal {
+      opacity: 0;
+      transform: translateY(18px) scale(0.97);
+      transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      pointer-events: none;
+    }
+
+    .step-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0px) scale(1);
+      pointer-events: auto;
+    }
+
+    /* Dynamic Stagger Animations for Slide-in */
+    .slam-in {
+      animation: slamDown 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes slamDown {
+      0% { opacity: 0; transform: scale(1.15) rotate(-3deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    /* Continuous subtle ambient floating (No mouse required) */
+    @keyframes ambientBob {
+      0%, 100% { transform: translateY(0px) rotate(var(--deg, -1deg)); }
+      50% { transform: translateY(-6px) rotate(calc(var(--deg, -1deg) + 1.2deg)); }
+    }
+
+    .floating-sticker {
+      animation: ambientBob 4.5s ease-in-out infinite;
+    }
+
+    /* Headings & Badges */
+    .slide-header {
+      margin-bottom: 15px;
+    }
+
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 4px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.8px;
+      text-transform: uppercase;
+    }
+
+    .slide-subtitle {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #4b4f58;
+      margin-top: 4px;
+    }
+
+    /* Neo-Brutalist Layout Primitives */
+    .brutal-card {
+      background: var(--paper);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-md);
+      border-radius: 6px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .tape-strip {
+      position: absolute;
+      top: -12px;
+      left: 30px;
+      background: rgba(255, 230, 0, 0.9);
+      border: 1.5px solid var(--ink);
+      padding: 2px 16px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 900;
+      transform: rotate(-2deg);
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .bullet-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .point-icon {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      background: var(--yellow);
+      border: var(--border-thin);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .tag-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border: var(--border-thin);
+      border-radius: 4px;
+      background: var(--paper);
+    }
+
+    /* Typewriter Cursor */
+    .typing-cursor::after {
+      content: '▋';
+      margin-left: 4px;
+      animation: blink 0.9s infinite;
+      color: var(--pink);
+    }
+
+    /* Pipeline Connector Bar */
+    .pipeline-container {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      position: relative;
+    }
+
+    .pipe-step {
+      flex: 1;
+      background: var(--paper);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-sm);
+      border-radius: 6px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .pipe-step.revealed {
+      background: #FFFDE6;
+      border-color: var(--ink);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Bottom Presenter Nav Bar */
+    .deck-footer {
+      height: 56px;
+      background: var(--paper);
+      border-top: var(--border-thick);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .step-counter-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .counter-tag {
+      background: var(--ink);
+      color: var(--yellow);
+      font-family: var(--font-mono);
+      font-weight: 900;
+      font-size: 0.85rem;
+      padding: 5px 12px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+
+    .substep-pill {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #666;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .action-btn {
+      height: 38px;
+      padding: 0 16px;
+      background: var(--cyan);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-sm);
+      font-family: var(--font-mono);
+      font-weight: 900;
+      font-size: 0.82rem;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .action-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0 var(--ink);
+    }
+
+    /* Signature Line Animations */
+    .sig-path {
+      stroke-dasharray: 400;
+      stroke-dashoffset: 400;
+      transition: stroke-dashoffset 1.4s cubic-bezier(0.45, 0, 0.55, 1);
+    }
+    .sig-drawn .sig-path {
+      stroke-dashoffset: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="presentation-viewport" id="viewport">
+    
+    <!-- Top System Header -->
+    <header class="deck-topbar">
+      <div class="status-left">
+        <div class="mac-dots">
+          <div class="dot dot-1"></div>
+          <div class="dot dot-2"></div>
+          <div class="dot dot-3"></div>
+        </div>
+        <span>PISJ-ES // CHARTER_PROPOSAL_2026-27</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="live-pulse"></div>
+        <span id="clickerMode" style="color: var(--ink);">CLICKER ACTIVE: PRESS [SPACE] OR [→]</span>
+      </div>
+
+      <div>
+        <span class="tag-pill" style="background: var(--ink); color: var(--paper); border:none;">EXECUTIVE REVIEW</span>
+      </div>
+    </header>
+
+    <!-- Slide Canvas Viewport -->
+    <main class="slides-stage">
+
+      <!-- ===================================================================
+           SLIDE 1: COVER HERO (Auto-typing code + Stamp Slam)
+           =================================================================== -->
+      <section class="slide active" data-slide="0">
+        <div style="margin: auto; max-width: 960px; width: 100%;">
+          <div class="brutal-card" style="padding: 44px; background: var(--paper); box-shadow: 14px 14px 0 var(--ink);">
+            
+            <div style="position: absolute; top: -20px; right: 40px; --deg: 7deg;" class="floating-sticker">
+              <div style="background: var(--pink); color: white; border: var(--border-thick); box-shadow: var(--shadow-sm); padding: 8px 18px; border-radius: 40px; font-family: var(--font-display); font-weight: 900; font-size: 0.95rem;">
+                <i class="fa-solid fa-stamp"></i> OFFICIAL SUBMISSION
+              </div>
+            </div>
+
+            <div class="tag-pill" style="background: var(--cyan); margin-bottom: 16px; font-size: 0.8rem;">
+              <i class="fa-solid fa-graduation-cap"></i> PAKISTAN INTERNATIONAL SCHOOL JEDDAH – ENGLISH SECTION
+            </div>
+
+            <h1 style="font-family: var(--font-display); font-size: 3.8rem; font-weight: 900; line-height: 0.95; letter-spacing: -1.5px; text-transform: uppercase;">
+              ESTABLISHMENT OF THE<br>
+              <span style="background: var(--yellow); padding: 0 8px; border: var(--border-thin);">MEDIA SOCIETY</span>
+            </h1>
+
+            <p style="font-family: var(--font-mono); font-size: 1.15rem; font-weight: 700; margin-top: 18px; color: #333;" id="heroTypewriter" class="typing-cursor">
+              A Unified, Disciplined Student Media Body.
+            </p>
+
+            <div class="step-reveal" data-step="1" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 30px; border-top: var(--border-thick); padding-top: 20px;">
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; color: #666; text-transform: uppercase;">Proposed Authority</div>
+                <div style="font-weight: 800; font-size: 1rem;">Raied Faisal & Eshaal Waseem</div>
+                <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #555;">(Male Head & Female Head)</div>
+              </div>
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; color: #666; text-transform: uppercase;">Administrative Oversight</div>
+                <div style="font-weight: 800; font-size: 1rem;">Principal & Deputy Head</div>
+                <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #555;">Institutional Governance</div>
+              </div>
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; color: #666; text-transform: uppercase;">Target Academic Year</div>
+                <div style="font-weight: 800; font-size: 1rem; color: var(--pink);">2026 – 2027 Cycle</div>
+                <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #555;">Date: 15th September, 2026</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 2: EXECUTIVE SUMMARY & CORE VALUES
+           =================================================================== -->
+      <section class="slide" data-slide="1">
+        <div class="slide-header">
+          <div class="slide-badge"><i class="fa-solid fa-compass"></i> SECTION 01 // FOUNDATION</div>
+          <h2 class="slide-title">Executive Summary & Vision</h2>
+          <p class="slide-subtitle">Centralizing campus digital media into an institutional asset.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Vision & Mission -->
+          <div class="brutal-card step-reveal" data-step="1" style="background: #FFFDF0;">
+            <div class="tape-strip">STRATEGIC OBJECTIVE</div>
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-top: 6px; margin-bottom: 12px;">
+              <i class="fa-solid fa-eye" style="color: var(--purple);"></i> Unified Vision & Mission
+            </h3>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--cyan);"><i class="fa-solid fa-cube"></i></div>
+              <span><strong>Official Powerhouse:</strong> Replaces fragmented, event-by-event ad-hoc media teams with one permanent student body.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--yellow);"><i class="fa-solid fa-video"></i></div>
+              <span><strong>Standardized Coverage:</strong> Manages photo, video, announcements, and school archives across all sports, MUN, and academic events.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--acid);"><i class="fa-solid fa-user-shield"></i></div>
+              <span><strong>Institutional Alignment:</strong> Strictly protects school values, local privacy regulations, and administrative protocols.</span>
+            </div>
+          </div>
+
+          <!-- 4 Core Values -->
+          <div class="brutal-card step-reveal" data-step="2" style="background: #F4F0FF;">
+            <div class="tape-strip" style="background: var(--cyan);">NON-NEGOTIABLE VALUES</div>
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-top: 6px; margin-bottom: 12px;">
+              <i class="fa-solid fa-gem" style="color: var(--pink);"></i> The 4 Core Pillars
+            </h3>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--pink); color:white;"><i class="fa-solid fa-shield"></i></div>
+              <span><strong>Responsible Representation:</strong> Every asset upholds PISJ-ES high school culture and prestige.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--pink); color:white;"><i class="fa-solid fa-users"></i></div>
+              <span><strong>Equal Opportunity:</strong> Merited platform across all high-school tiers without arbitrary grade barriers.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--pink); color:white;"><i class="fa-solid fa-handshake"></i></div>
+              <span><strong>Institutional Support:</strong> Reliable creative partner to all clubs, departments, and assemblies.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--pink); color:white;"><i class="fa-solid fa-lock"></i></div>
+              <span><strong>Accountability & Audit:</strong> Zero personal hoarding of footage; complete administrative transparency.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="3" style="background: var(--ink); color: var(--paper); padding: 12px 20px; border-radius: 4px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.82rem;">
+          <span><i class="fa-solid fa-bolt" style="color: var(--yellow);"></i> PARADIGM SHIFT:</span>
+          <span>FROM CHAOTIC SCATTERED VOLUNTEERS TO STRUCTURED INSTITUTIONAL GOVERNANCE</span>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 3: PROBLEM STATEMENT (4 Hazards Dropping In)
+           =================================================================== -->
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <div class="slide-badge" style="background: var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> SECTION 02 // VULNERABILITY AUDIT</div>
+          <h2 class="slide-title">Failures of the Legacy Model</h2>
+          <p class="slide-subtitle">Past ad-hoc teams exposed the school to 4 critical administrative friction points.</p>
+        </div>
+
+        <div class="grid-4">
+          <!-- Problem 1 -->
+          <div class="brutal-card step-reveal" data-step="1" style="background: #FFF1F2; border-color: var(--danger); transform: rotate(-1deg);">
+            <div style="font-size: 1.8rem; color: var(--danger); margin-bottom: 8px;"><i class="fa-solid fa-mobile-screen"></i></div>
+            <h3 style="font-size: 1.1rem; margin-bottom: 6px;">1. Unregulated Phone Use</h3>
+            <p style="font-size: 0.85rem; font-weight: 600; line-height: 1.4;">Unvetted mobile recording during school hours under the pretext of "taking coverage," disrupting classrooms.</p>
+          </div>
+
+          <!-- Problem 2 -->
+          <div class="brutal-card step-reveal" data-step="2" style="background: #FFF1F2; border-color: var(--danger); transform: rotate(1deg);">
+            <div style="font-size: 1.8rem; color: var(--danger); margin-bottom: 8px;"><i class="fa-solid fa-hard-drive"></i></div>
+            <h3 style="font-size: 1.1rem; margin-bottom: 6px;">2. Lost Footages & Quality</h3>
+            <p style="font-size: 0.85rem; font-weight: 600; line-height: 1.4;">Inconsistent capture quality. Photos stayed on private phones and were permanently lost after students graduated.</p>
+          </div>
+
+          <!-- Problem 3 -->
+          <div class="brutal-card step-reveal" data-step="3" style="background: #FFF1F2; border-color: var(--danger); transform: rotate(-1deg);">
+            <div style="font-size: 1.8rem; color: var(--danger); margin-bottom: 8px;"><i class="fa-solid fa-user-clock"></i></div>
+            <h3 style="font-size: 1.1rem; margin-bottom: 6px;">3. Admin Coordination Drain</h3>
+            <p style="font-size: 0.85rem; font-weight: 600; line-height: 1.4;">Teachers and Heads had to recruit, brief, and monitor brand-new media volunteers for every isolated event.</p>
+          </div>
+
+          <!-- Problem 4 -->
+          <div class="brutal-card step-reveal" data-step="4" style="background: #FFF1F2; border-color: var(--danger); transform: rotate(1.5deg);">
+            <div style="font-size: 1.8rem; color: var(--danger); margin-bottom: 8px;"><i class="fa-solid fa-shield-cat"></i></div>
+            <h3 style="font-size: 1.1rem; margin-bottom: 6px;">4. Compliance Risks</h3>
+            <p style="font-size: 0.85rem; font-weight: 600; line-height: 1.4;">Absence of pre-release approval pipelines created severe vulnerabilities for improper online leaks.</p>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="5" style="background: var(--yellow); border: var(--border-thick); padding: 12px 20px; border-radius: 4px; display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-family: var(--font-mono); font-weight: 800; font-size: 0.88rem;">
+            <i class="fa-solid fa-circle-exclamation"></i> CURRENT REALITY: High operational friction and institutional risk without a centralized charter.
+          </span>
+          <span class="tag-pill" style="background: var(--ink); color: white;">IMMEDIATE ACTION REQUIRED</span>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 4: THE SOLUTION (Side-by-side comparison reveal)
+           =================================================================== -->
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <div class="slide-badge" style="background: var(--green); color: black;"><i class="fa-solid fa-check-double"></i> SECTION 03 // ARCHITECTURAL REFORM</div>
+          <h2 class="slide-title">Legacy Chaos vs. Centralized Order</h2>
+          <p class="slide-subtitle">How the Media Society directly solves each systemic administrative bottleneck.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Legacy Column -->
+          <div class="brutal-card" style="background: #FFF5F5; border-color: #DC2626;">
+            <span class="tag-pill" style="background: #DC2626; color: white; border: none; margin-bottom: 12px;">DISCONTINUED LEGACY SYSTEM</span>
+            
+            <div class="step-reveal" data-step="1" style="margin-bottom: 12px; padding: 8px; background: white; border: 1.5px solid #DC2626; border-radius: 4px;">
+              <strong style="color: #DC2626;"><i class="fa-solid fa-xmark"></i> Ad-Hoc Committees:</strong> Disconnected groups assembled and disbanded repeatedly throughout the year.
+            </div>
+            
+            <div class="step-reveal" data-step="2" style="margin-bottom: 12px; padding: 8px; background: white; border: 1.5px solid #DC2626; border-radius: 4px;">
+              <strong style="color: #DC2626;"><i class="fa-solid fa-xmark"></i> Uncontrolled Phone Usage:</strong> Students roaming hallways under vague claims of school photography.
+            </div>
+            
+            <div class="step-reveal" data-step="3" style="margin-bottom: 12px; padding: 8px; background: white; border: 1.5px solid #DC2626; border-radius: 4px;">
+              <strong style="color: #DC2626;"><i class="fa-solid fa-xmark"></i> Local Storage Loss:</strong> Raw files hoarded on private laptops; inaccessible to school administration.
+            </div>
+            
+            <div class="step-reveal" data-step="4" style="padding: 8px; background: white; border: 1.5px solid #DC2626; border-radius: 4px;">
+              <strong style="color: #DC2626;"><i class="fa-solid fa-xmark"></i> Multi-Line Confusion:</strong> Event organizers overwhelmed by communication breakdowns.
+            </div>
+          </div>
+
+          <!-- Central Solution Column -->
+          <div class="brutal-card" style="background: #F0FDF4; border-color: #16A34A;">
+            <span class="tag-pill" style="background: #16A34A; color: white; border: none; margin-bottom: 12px;">CENTRAL MEDIA SOCIETY MODEL</span>
+            
+            <div class="step-reveal" data-step="1" style="margin-bottom: 12px; padding: 8px; background: white; border: 2px solid #16A34A; border-radius: 4px; box-shadow: 2px 2px 0 #16A34A;">
+              <strong style="color: #16A34A;"><i class="fa-solid fa-check"></i> Permanent Roster:</strong> One trained, synchronized body managing all events exclusively.
+            </div>
+            
+            <div class="step-reveal" data-step="2" style="margin-bottom: 12px; padding: 8px; background: white; border: 2px solid #16A34A; border-radius: 4px; box-shadow: 2px 2px 0 #16A34A;">
+              <strong style="color: #16A34A;"><i class="fa-solid fa-check"></i> Official Media Badging:</strong> Zero device usage permitted without physical school credentials.
+            </div>
+            
+            <div class="step-reveal" data-step="3" style="margin-bottom: 12px; padding: 8px; background: white; border: 2px solid #16A34A; border-radius: 4px; box-shadow: 2px 2px 0 #16A34A;">
+              <strong style="color: #16A34A;"><i class="fa-solid fa-check"></i> OneDrive Central Archive:</strong> Mandatory direct cloud upload to official school storage.
+            </div>
+            
+            <div class="step-reveal" data-step="4" style="padding: 8px; background: white; border: 2px solid #16A34A; border-radius: 4px; box-shadow: 2px 2px 0 #16A34A;">
+              <strong style="color: #16A34A;"><i class="fa-solid fa-check"></i> Direct Executive Line:</strong> Single reporting channel to the Deputy Head and Principal.
+            </div>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="5" style="text-align: center; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 800; background: var(--cyan); padding: 8px; border: var(--border-thin); border-radius: 4px;">
+          <i class="fa-solid fa-shield-check"></i> RESULT: 100% AUDITABLE, SAFE, AND ACCOUNTABLE MEDIA COVERAGE
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 5: 4 SCOPE PILLARS (Photography, Video, Graphics, Post)
+           =================================================================== -->
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <div class="slide-badge"><i class="fa-solid fa-layer-group"></i> SECTION 04 // DELIVERABLES</div>
+          <h2 class="slide-title">Full-Service Scope of Work</h2>
+          <p class="slide-subtitle">A unified production team delivering across four professional media categories.</p>
+        </div>
+
+        <div class="grid-4">
+          <!-- Pillar 1 -->
+          <div class="brutal-card step-reveal" data-step="1" style="background: #FFFDF5;">
+            <div class="tape-strip" style="background: var(--pink); color:white;">01 // STILLS</div>
+            <div style="font-size: 1.8rem; margin: 10px 0 6px 0; color: var(--pink);"><i class="fa-solid fa-camera"></i></div>
+            <h3 style="font-size: 1.15rem; margin-bottom: 8px;">Photography</h3>
+            <ul style="list-style: none; font-size: 0.82rem; font-weight: 700; display:flex; flex-direction:column; gap:6px;">
+              <li><i class="fa-solid fa-angle-right" style="color:var(--pink)"></i> Formal award shots</li>
+              <li><i class="fa-solid fa-angle-right" style="color:var(--pink)"></i> High-speed sports action</li>
+              <li><i class="fa-solid fa-angle-right" style="color:var(--pink)"></i> Candid campus life</li>
+              <li><i class="fa-solid fa-angle-right" style="color:var(--pink)"></i> Academic showcase portraits</li>
+            </ul>
+            <div class="tag-pill" style="margin-top: 12px; font-size: 0.68rem; background: var(--pink); color:white; border:none;">App: Yearbooks & Archives</div>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="brutal-card step-reveal" data-step="2" style="background: #F0FDFA;">
+            <div class="tape-strip" style="background: var(--cyan);">02 // MOTION</div>
+            <div style="font-size: 1.8rem; margin: 10px 0 6px 0; color: #0891B2;"><i class="fa-solid fa-video"></i></div>
+            <h3 style="font-size: 1.15rem; margin-bottom: 8px;">Videography</h3>
+            <ul style="list-style: none; font-size: 0.82rem; font-weight: 700; display:flex; flex-direction:column; gap:6px;">
+              <li><i class="fa-solid fa-angle-right" style="color:#0891B2)"></i> Dynamic recap reels</li>
+              <li><i class="fa-solid fa-angle-right" style="color:#0891B2)"></i> Full assembly recordings</li>
+              <li><i class="fa-solid fa-angle-right" style="color:#0891B2)"></i> Faculty/student interviews</li>
+              <li><i class="fa-solid fa-angle-right" style="color:#0891B2)"></i> Event promotional teasers</li>
+            </ul>
+            <div class="tag-pill" style="margin-top: 12px; font-size: 0.68rem; background: var(--cyan); border:none;">App: School Announcements</div>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="brutal-card step-reveal" data-step="3" style="background: #F0FFF4;">
+            <div class="tape-strip" style="background: var(--green);">03 // VISUALS</div>
+            <div style="font-size: 1.8rem; margin: 10px 0 6px 0; color: #16A34A;"><i class="fa-solid fa-pen-nib"></i></div>
+            <h3 style="font-size: 1.15rem; margin-bottom: 8px;">Graphic Design</h3>
+            <ul style="list-style: none; font-size: 0.82rem; font-weight: 700; display:flex; flex-direction:column; gap:6px;">
+              <li><i class="fa-solid fa-angle-right" style="color:#16A34A)"></i> Event posters & flyers</li>
+              <li><i class="fa-solid fa-angle-right" style="color:#16A34A)"></i> Digital notice banners</li>
+              <li><i class="fa-solid fa-angle-right" style="color:#16A34A)"></i> Stage backdrops & badges</li>
+              <li><i class="fa-solid fa-angle-right" style="color:#16A34A)"></i> Social media templates</li>
+            </ul>
+            <div class="tag-pill" style="margin-top: 12px; font-size: 0.68rem; background: var(--green); border:none;">App: On-Campus Displays</div>
+          </div>
+
+          <!-- Pillar 4 -->
+          <div class="brutal-card step-reveal" data-step="4" style="background: #FAF5FF;">
+            <div class="tape-strip" style="background: var(--purple); color:white;">04 // FINISHING</div>
+            <div style="font-size: 1.8rem; margin: 10px 0 6px 0; color: var(--purple);"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <h3 style="font-size: 1.15rem; margin-bottom: 8px;">Post-Production</h3>
+            <ul style="list-style: none; font-size: 0.82rem; font-weight: 700; display:flex; flex-direction:column; gap:6px;">
+              <li><i class="fa-solid fa-angle-right" style="color:var(--purple)"></i> Cinematic color grading</li>
+              <li><i class="fa-solid fa-angle-right" style="color:var(--purple)"></i> Audio denoise & balancing</li>
+              <li><i class="fa-solid fa-angle-right" style="color:var(--purple)"></i> Subtitling & captions</li>
+              <li><i class="fa-solid fa-angle-right" style="color:var(--purple)"></i> Export compliance prep</li>
+            </ul>
+            <div class="tag-pill" style="margin-top: 12px; font-size: 0.68rem; background: var(--purple); color:white; border:none;">App: Administrative Review</div>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="5" style="background: var(--yellow); padding: 8px 16px; border: var(--border-thin); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 800; text-align:center;">
+          <i class="fa-solid fa-arrows-rotate"></i> FLEXIBLE WORKFORCE: Members do not sit in rigid silos—all cross-collaborate under Co-Head coordination.
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 6: TECHNICAL STACK (Simulated Terminal)
+           =================================================================== -->
+      <section class="slide" data-slide="5">
+        <div class="slide-header">
+          <div class="slide-badge" style="background: var(--purple); color: white;"><i class="fa-solid fa-terminal"></i> SECTION 05 // INFRASTRUCTURE</div>
+          <h2 class="slide-title">Tools & Software Architecture</h2>
+          <p class="slide-subtitle">Industry-standard toolchain configured for zero data leakage and fast turnaround.</p>
+        </div>
+
+        <div class="grid-3">
+          <!-- Tool Group 1 -->
+          <div class="brutal-card step-reveal" data-step="1">
+            <span class="tag-pill" style="background: var(--cyan); margin-bottom: 12px;">PRODUCTION GEAR</span>
+            <h3 style="font-size: 1.25rem; margin-bottom: 12px;"><i class="fa-solid fa-camera-retro"></i> Capture Hardware</h3>
+            <div class="bullet-point">
+              <div class="point-icon"><i class="fa-solid fa-camera"></i></div>
+              <span><strong>DSLR & Mirrorless:</strong> High-resolution master event coverage & official portraiture.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+              <span><strong>Approved Mobile Rigs:</strong> Fast turnaround reels operated exclusively with physical badges.</span>
+            </div>
+          </div>
+
+          <!-- Tool Group 2 -->
+          <div class="brutal-card step-reveal" data-step="2">
+            <span class="tag-pill" style="background: var(--pink); color:white; margin-bottom: 12px;">CREATIVE APPS</span>
+            <h3 style="font-size: 1.25rem; margin-bottom: 12px;"><i class="fa-solid fa-bezier-curve"></i> Creative Software</h3>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--pink); color:white;"><i class="fa-solid fa-palette"></i></div>
+              <span><strong>Canva & Photoshop:</strong> Standardized school announcements, flyers, and event posters.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--pink); color:white;"><i class="fa-solid fa-scissors"></i></div>
+              <span><strong>Premiere Pro & CapCut:</strong> Precision editing, rapid social reels, audio polishing, and captions.</span>
+            </div>
+          </div>
+
+          <!-- Tool Group 3 -->
+          <div class="brutal-card step-reveal" data-step="3">
+            <span class="tag-pill" style="background: var(--green); margin-bottom: 12px;">GOVERNANCE & CLOUD</span>
+            <h3 style="font-size: 1.25rem; margin-bottom: 12px;"><i class="fa-solid fa-cloud"></i> Ops & Storage</h3>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--green);"><i class="fa-brands fa-windows"></i></div>
+              <span><strong>Official OneDrive:</strong> Institutional centralized cloud directory for all raw & edited assets.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--green);"><i class="fa-brands fa-google"></i></div>
+              <span><strong>Google Forms & WhatsApp:</strong> Direct intake request workflows and monitored student ops chat.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="4" style="background: var(--ink); color: #00FF66; padding: 12px 18px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.8rem; display: flex; align-items: center; justify-content: space-between;">
+          <span><code>root@media-soc:~$ verify_storage_compliance --enforce-onedrive</code></span>
+          <span style="background: #00FF66; color: black; padding: 2px 8px; font-weight: 800; border-radius: 2px;">STATUS: LOCAL RETENTION ZERO-TOLERANCE</span>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 7: CHAIN OF COMMAND (Hierarchy Level Drop)
+           =================================================================== -->
+      <section class="slide" data-slide="6">
+        <div class="slide-header">
+          <div class="slide-badge"><i class="fa-solid fa-sitemap"></i> SECTION 06 // HIERARCHY</div>
+          <h2 class="slide-title">Governance & Direct Chain of Command</h2>
+          <p class="slide-subtitle">A lean 3-tier hierarchy guaranteeing rapid accountability without middle-tier red tape.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- Level 1 -->
+          <div class="brutal-card step-reveal" data-step="1" style="background: var(--yellow); padding: 16px 24px; border-width: 4px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap: 20px;">
+              <div style="width: 50px; height: 50px; background: white; border: var(--border-thin); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size: 1.5rem;">
+                <i class="fa-solid fa-building-columns"></i>
+              </div>
+              <div>
+                <span class="tag-pill" style="background: var(--ink); color: white; margin-bottom: 2px;">TIER 1 // EXECUTIVE APPROVAL</span>
+                <h3 style="font-size: 1.4rem;">Principal & Deputy Head</h3>
+              </div>
+            </div>
+            <div style="font-size: 0.88rem; font-weight: 700; text-align: right;">
+              <div>• Ultimate approval on policies & releases</div>
+              <div>• Emergency administrative intervention</div>
+            </div>
+          </div>
+
+          <!-- Connecting Arrow -->
+          <div class="step-reveal" data-step="2" style="text-align: center; font-size: 1.2rem; font-weight: 900; line-height: 0.8;">
+            <i class="fa-solid fa-arrow-down"></i> Direct Reporting Channel
+          </div>
+
+          <!-- Level 2 -->
+          <div class="brutal-card step-reveal" data-step="2" style="background: #E0F2FE; padding: 16px 24px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap: 20px;">
+              <div style="width: 50px; height: 50px; background: white; border: var(--border-thin); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size: 1.5rem; color: #0284C7;">
+                <i class="fa-solid fa-users-gear"></i>
+              </div>
+              <div>
+                <span class="tag-pill" style="background: #0284C7; color: white; border: none; margin-bottom: 2px;">TIER 2 // STUDENT LEADERSHIP</span>
+                <h3 style="font-size: 1.4rem;">Male Head & Female Head (Co-Heads)</h3>
+              </div>
+            </div>
+            <div style="font-size: 0.88rem; font-weight: 700; text-align: right;">
+              <div>• Manages rosters, schedules & shifts</div>
+              <div>• Quality review & decorum pre-vetting</div>
+            </div>
+          </div>
+
+          <!-- Connecting Arrow -->
+          <div class="step-reveal" data-step="3" style="text-align: center; font-size: 1.2rem; font-weight: 900; line-height: 0.8;">
+            <i class="fa-solid fa-arrow-down"></i> Task Coordination
+          </div>
+
+          <!-- Level 3 -->
+          <div class="brutal-card step-reveal" data-step="3" style="background: #F0FDF4; padding: 16px 24px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap: 20px;">
+              <div style="width: 50px; height: 50px; background: white; border: var(--border-thin); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size: 1.5rem; color: #16A34A;">
+                <i class="fa-solid fa-camera-rotate"></i>
+              </div>
+              <div>
+                <span class="tag-pill" style="background: #16A34A; color: white; border:none; margin-bottom: 2px;">TIER 3 // PRODUCTION CREW</span>
+                <h3 style="font-size: 1.4rem;">General Membership (Media Officers)</h3>
+              </div>
+            </div>
+            <div style="font-size: 0.88rem; font-weight: 700; text-align: right;">
+              <div>• On-field badged photo & video capture</div>
+              <div>• Graphic designing & video editing execution</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 8: INTER-SOCIETY COLLABORATION & AUTONOMY
+           =================================================================== -->
+      <section class="slide" data-slide="7">
+        <div class="slide-header">
+          <div class="slide-badge" style="background: var(--cyan); color: black;"><i class="fa-solid fa-handshake"></i> SECTION 07 // CAMPUS INTEGRATION</div>
+          <h2 class="slide-title">Inter-Society Synergy & Autonomy</h2>
+          <p class="slide-subtitle">We serve as a creative production arm for all societies, not a supervisory authority.</p>
+        </div>
+
+        <div class="grid-3">
+          <!-- Principle 1 -->
+          <div class="brutal-card step-reveal" data-step="1" style="background: #FFFDF0;">
+            <div class="tape-strip" style="background: var(--yellow);">AUTONOMY</div>
+            <div style="font-size: 2rem; color: var(--ink); margin: 12px 0 8px 0;"><i class="fa-solid fa-lightbulb"></i></div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 8px;">100% Creative Autonomy</h3>
+            <p style="font-size: 0.88rem; font-weight: 600; line-height: 1.45;">
+              Partner clubs (MUN, Debates, Sports, Drama) formulate their own scripts, themes, and reel concepts. Media Society executes the technical capture and editing.
+            </p>
+          </div>
+
+          <!-- Principle 2 -->
+          <div class="brutal-card step-reveal" data-step="2" style="background: #EFF6FF;">
+            <div class="tape-strip" style="background: var(--cyan);">INCLUSIVITY</div>
+            <div style="font-size: 2rem; color: #2563EB; margin: 12px 0 8px 0;"><i class="fa-solid fa-people-arrows"></i></div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 8px;">Non-Exclusive Roles</h3>
+            <p style="font-size: 0.88rem; font-weight: 600; line-height: 1.45;">
+              Students are strictly permitted and encouraged to hold concurrent leadership roles in other clubs. We break institutional silos instead of creating them.
+            </p>
+          </div>
+
+          <!-- Principle 3 -->
+          <div class="brutal-card step-reveal" data-step="3" style="background: #FDF4FF;">
+            <div class="tape-strip" style="background: var(--pink); color:white;">FLEXIBILITY</div>
+            <div style="font-size: 2rem; color: var(--pink); margin: 12px 0 8px 0;"><i class="fa-solid fa-calendar-check"></i></div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 8px;">Zero Scheduling Conflict</h3>
+            <p style="font-size: 0.88rem; font-weight: 600; line-height: 1.45;">
+              Rosters are coordinated dynamically by Co-Heads. If a member is debating or playing sports during an event, they are exempt from coverage duty.
+            </p>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="4" style="background: var(--ink); color: var(--paper); border: var(--border-thin); border-radius: 4px; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; font-family: var(--font-mono); font-size: 0.85rem;">
+          <span><i class="fa-solid fa-star" style="color:var(--yellow)"></i> COLLABORATIVE COMMITMENT:</span>
+          <span>A TRUSTED SERVICE ENGINE FOR THE ENTIRE PISJ-ES STUDENT BODY</span>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 9: 6-STEP EVENT LIFECYCLE (Interactive pipeline illumination)
+           =================================================================== -->
+      <section class="slide" data-slide="8">
+        <div class="slide-header">
+          <div class="slide-badge"><i class="fa-solid fa-arrows-split-up-and-left"></i> SECTION 08 // OPERATIONS</div>
+          <h2 class="slide-title">The 6-Step Operational Lifecycle</h2>
+          <p class="slide-subtitle">Every single school event follows this unbending, disciplined 6-stage lifecycle.</p>
+        </div>
+
+        <div class="pipeline-container">
+          <!-- Step 1 -->
+          <div class="pipe-step step-reveal" data-step="1">
+            <span class="tag-pill" style="background: var(--yellow); margin-bottom: 8px;">STAGE 01</span>
+            <h4 style="font-family: var(--font-display); font-size: 1.05rem;">Planning</h4>
+            <p style="font-size: 0.78rem; font-weight: 600; margin-top: 6px;">Co-heads assign crew, verify gear, and conduct client brief.</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="pipe-step step-reveal" data-step="2">
+            <span class="tag-pill" style="background: var(--cyan); margin-bottom: 8px;">STAGE 02</span>
+            <h4 style="font-family: var(--font-display); font-size: 1.05rem;">Coverage</h4>
+            <p style="font-size: 0.78rem; font-weight: 600; margin-top: 6px;">Badged members capture designated media with strict decorum.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="pipe-step step-reveal" data-step="3" style="background: #EFF6FF;">
+            <span class="tag-pill" style="background: #3B82F6; color:white; margin-bottom: 8px;">STAGE 03</span>
+            <h4 style="font-family: var(--font-display); font-size: 1.05rem;">Archiving</h4>
+            <p style="font-size: 0.78rem; font-weight: 600; margin-top: 6px;">Mandatory upload of raw media straight into school OneDrive.</p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="pipe-step step-reveal" data-step="4">
+            <span class="tag-pill" style="background: var(--purple); color:white; margin-bottom: 8px;">STAGE 04</span>
+            <h4 style="font-family: var(--font-display); font-size: 1.05rem;">Editing</h4>
+            <p style="font-size: 0.78rem; font-weight: 600; margin-top: 6px;">Color grading, sound polishing, captions, and graphic sizing.</p>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="pipe-step step-reveal" data-step="5" style="background: #FFFBEB;">
+            <span class="tag-pill" style="background: var(--orange); color:white; margin-bottom: 8px;">STAGE 05</span>
+            <h4 style="font-family: var(--font-display); font-size: 1.05rem;">Admin Sign-Off</h4>
+            <p style="font-size: 0.78rem; font-weight: 600; margin-top: 6px;">2-tier verification and sign-off by Deputy Head / Principal.</p>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="pipe-step step-reveal" data-step="6" style="background: #F0FDF4;">
+            <span class="tag-pill" style="background: var(--green); margin-bottom: 8px;">STAGE 06</span>
+            <h4 style="font-family: var(--font-display); font-size: 1.05rem;">Release</h4>
+            <p style="font-size: 0.78rem; font-weight: 600; margin-top: 6px;">Final assets published to school boards, screens & socials.</p>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="7" style="background: var(--paper); border: var(--border-thick); box-shadow: var(--shadow-sm); padding: 12px 20px; border-radius: 4px; display:flex; align-items:center; gap: 14px;">
+          <div class="tag-pill" style="background: var(--pink); color:white; border:none; font-size: 0.8rem;">POLICY ENFORCEMENT</div>
+          <span style="font-size: 0.85rem; font-weight: 700;">
+            Local file retention on private mobile storage is strictly prohibited once the central OneDrive upload completes.
+          </span>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 10: ZERO-DISRUPTION ACADEMIC POLICY
+           =================================================================== -->
+      <section class="slide" data-slide="9">
+        <div class="slide-header">
+          <div class="slide-badge" style="background: var(--yellow); color:black;"><i class="fa-solid fa-graduation-cap"></i> SECTION 09 // ACADEMIC PROTOCOL</div>
+          <h2 class="slide-title">Zero-Disruption Academic Policy</h2>
+          <p class="slide-subtitle">Academics are unconditional. Media operations never compromise student grades.</p>
+        </div>
+
+        <div class="grid-3">
+          <!-- Safeguard 1 -->
+          <div class="brutal-card step-reveal" data-step="1" style="background: #FEF2F2; border-color: var(--danger);">
+            <div style="font-size: 2.2rem; color: var(--danger); margin-bottom: 10px;"><i class="fa-solid fa-ban"></i></div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 8px;">100% Exam Blackouts</h3>
+            <ul style="list-style: none; font-size: 0.88rem; font-weight: 700; display:flex; flex-direction:column; gap:8px;">
+              <li><i class="fa-solid fa-circle-xmark" style="color:var(--danger)"></i> Zero media operations during mid-terms.</li>
+              <li><i class="fa-solid fa-circle-xmark" style="color:var(--danger)"></i> Complete shutdown during Mock Exam cycles.</li>
+              <li><i class="fa-solid fa-circle-xmark" style="color:var(--danger)"></i> Complete shutdown during Cambridge Final Exams.</li>
+            </ul>
+          </div>
+
+          <!-- Safeguard 2 -->
+          <div class="brutal-card step-reveal" data-step="2" style="background: #EFF6FF; border-color: #2563EB;">
+            <div style="font-size: 2.2rem; color: #2563EB; margin-bottom: 10px;"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 8px;">Class Time Protection</h3>
+            <ul style="list-style: none; font-size: 0.88rem; font-weight: 700; display:flex; flex-direction:column; gap:8px;">
+              <li><i class="fa-solid fa-circle-check" style="color:#2563EB"></i> Coverage duties must NEVER conflict with core instructional class hours.</li>
+              <li><i class="fa-solid fa-circle-check" style="color:#2563EB"></i> Rare exceptions require advance written approval from the Deputy Head.</li>
+            </ul>
+          </div>
+
+          <!-- Safeguard 3 -->
+          <div class="brutal-card step-reveal" data-step="3" style="background: #F0FDF4; border-color: #16A34A;">
+            <div style="font-size: 2.2rem; color: #16A34A; margin-bottom: 10px;"><i class="fa-solid fa-award"></i></div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 8px;">Grade Thresholds</h3>
+            <ul style="list-style: none; font-size: 0.88rem; font-weight: 700; display:flex; flex-direction:column; gap:8px;">
+              <li><i class="fa-solid fa-circle-check" style="color:#16A34A"></i> Active roster eligibility demands satisfactory academic reports.</li>
+              <li><i class="fa-solid fa-circle-check" style="color:#16A34A"></i> Any grade decline triggers automatic temporary duty suspension.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="4" style="background: var(--yellow); padding: 12px 20px; border: var(--border-thick); border-radius: 4px; text-align: center; font-family: var(--font-mono); font-weight: 900; font-size: 0.88rem;">
+          <i class="fa-solid fa-shield-halved"></i> "STUDENTS FIRST, CREATORS SECOND" // SAFEGUARDING ACADEMIC EXCELLENCE
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 11: TWO-TIER APPROVAL PIPELINE
+           =================================================================== -->
+      <section class="slide" data-slide="10">
+        <div class="slide-header">
+          <div class="slide-badge" style="background: var(--pink); color:white;"><i class="fa-solid fa-lock"></i> SECTION 10 // SECURITY CLEARANCE</div>
+          <h2 class="slide-title">Two-Tier Administrative Approval Pipeline</h2>
+          <p class="slide-subtitle">Zero content is released to the public without passing both mandatory checkpoints.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Gate 1 -->
+          <div class="brutal-card step-reveal" data-step="1" style="background: #FFFDF0; border-width: 3.5px;">
+            <div class="tape-strip" style="background: var(--cyan);">GATE 01 // PRE-SCREENING</div>
+            <div style="display: flex; align-items:center; gap: 12px; margin: 10px 0 14px 0;">
+              <div class="point-icon" style="background: var(--cyan);"><i class="fa-solid fa-user-check"></i></div>
+              <h3 style="font-size: 1.3rem;">Student Co-Head Quality Audit</h3>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon"><i class="fa-solid fa-sliders"></i></div>
+              <span><strong>Technical Standard Inspection:</strong> Verification of audio levels, exposure, focus, framing, and clean rendering.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon"><i class="fa-solid fa-shield"></i></div>
+              <span><strong>Decorum & Decency Audit:</strong> Rigorous review guaranteeing strict adherence to school behavioral guidelines and modesty rules.</span>
+            </div>
+          </div>
+
+          <!-- Gate 2 -->
+          <div class="brutal-card step-reveal" data-step="2" style="background: #F0FDF4; border-width: 3.5px;">
+            <div class="tape-strip" style="background: var(--green);">GATE 02 // EXECUTIVE AUTHORIZATION</div>
+            <div style="display: flex; align-items:center; gap: 12px; margin: 10px 0 14px 0;">
+              <div class="point-icon" style="background: var(--green);"><i class="fa-solid fa-stamp"></i></div>
+              <h3 style="font-size: 1.3rem;">Principal & Deputy Head Sign-off</h3>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--green);"><i class="fa-solid fa-building-circle-check"></i></div>
+              <span><strong>Institutional Representation:</strong> Reviewing public relations impact and strategic alignment with PISJ-ES policies.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon" style="background: var(--green);"><i class="fa-solid fa-file-signature"></i></div>
+              <span><strong>Documented Release Clearance:</strong> Only assets stamped with executive approval are dispatched to publication channels.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="3" style="background: var(--ink); color: white; padding: 12px 20px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.85rem;">
+          <span><i class="fa-solid fa-hand-holding-hand" style="color: var(--pink);"></i> STRICT GOVERNANCE MANDATE:</span>
+          <span>NO BYPASSING ALLOWED // ZERO SOCIAL MEDIA ACCESS KEYS GIVEN TO GENERAL MEMBERS</span>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 12: FOUNDING ROSTER & DEPLOYMENT
+           =================================================================== -->
+      <section class="slide" data-slide="11">
+        <div class="slide-header">
+          <div class="slide-badge" style="background: var(--acid); color:black;"><i class="fa-solid fa-users"></i> SECTION 11 // THE TEAM</div>
+          <h2 class="slide-title">Current Membership Roster</h2>
+          <p class="slide-subtitle">Dedicated, multi-skilled A2 senior cohort established to execute the charter immediately.</p>
+        </div>
+
+        <div class="grid-4" style="gap: 12px;">
+          <!-- Raied -->
+          <div class="brutal-card step-reveal" data-step="1" style="background: var(--yellow); padding: 14px;">
+            <div class="tag-pill" style="background: var(--ink); color:white; margin-bottom: 6px;">CO-HEAD (MALE)</div>
+            <div style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 800;">Raied Faisal</div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800; margin-top: 4px;">Class: A2-B4</div>
+          </div>
+
+          <!-- Eshaal -->
+          <div class="brutal-card step-reveal" data-step="1" style="background: var(--yellow); padding: 14px;">
+            <div class="tag-pill" style="background: var(--ink); color:white; margin-bottom: 6px;">CO-HEAD (FEMALE)</div>
+            <div style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 800;">Eshaal Waseem</div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800; margin-top: 4px;">Class: A2-G5</div>
+          </div>
+
+          <!-- Member 1 -->
+          <div class="brutal-card step-reveal" data-step="2" style="background: white; padding: 14px;">
+            <div class="tag-pill" style="margin-bottom: 6px;">MEMBER</div>
+            <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 800;">Aisha Fahim</div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #666; margin-top: 4px;">Class: A2-G4</div>
+          </div>
+
+          <!-- Member 2 -->
+          <div class="brutal-card step-reveal" data-step="2" style="background: white; padding: 14px;">
+            <div class="tag-pill" style="margin-bottom: 6px;">MEMBER</div>
+            <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 800;">Maazin Sohail</div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #666; margin-top: 4px;">Class: A2-B7</div>
+          </div>
+
+          <!-- Member 3 -->
+          <div class="brutal-card step-reveal" data-step="3" style="background: white; padding: 14px;">
+            <div class="tag-pill" style="margin-bottom: 6px;">MEMBER</div>
+            <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 800;">Alisha Ansar</div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #666; margin-top: 4px;">Class: A2-G5</div>
+          </div>
+
+          <!-- Member 4 -->
+          <div class="brutal-card step-reveal" data-step="3" style="background: white; padding: 14px;">
+            <div class="tag-pill" style="margin-bottom: 6px;">MEMBER</div>
+            <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 800;">Zain Khan</div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #666; margin-top: 4px;">Class: A2-B7</div>
+          </div>
+
+          <!-- Member 5 -->
+          <div class="brutal-card step-reveal" data-step="4" style="background: white; padding: 14px;">
+            <div class="tag-pill" style="margin-bottom: 6px;">MEMBER</div>
+            <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 800;">Ayesha Laeeq</div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #666; margin-top: 4px;">Class: A2-G5</div>
+          </div>
+
+          <!-- Member 6 -->
+          <div class="brutal-card step-reveal" data-step="4" style="background: white; padding: 14px;">
+            <div class="tag-pill" style="margin-bottom: 6px;">MEMBER</div>
+            <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 800;">Ibrahim Danish</div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #666; margin-top: 4px;">Class: A2-B6</div>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="5" style="background: #FFFDF0; border: var(--border-thin); padding: 10px 18px; border-radius: 4px; display:flex; justify-content:space-between; align-items:center; font-family: var(--font-mono); font-size: 0.8rem;">
+          <span><i class="fa-solid fa-user-plus" style="color:var(--orange)"></i> <strong>Dynamic Scale:</strong> Initial core group with open merit-based recruitment planned across other grade tiers.</span>
+          <span class="tag-pill" style="background: var(--ink); color:white;">EQUAL ACCESS</span>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 13: CONCLUSION & AUTHORIZATION (Interactive Signatures)
+           =================================================================== -->
+      <section class="slide" data-slide="12">
+        <div class="slide-header">
+          <div class="slide-badge" style="background: var(--green); color: black;"><i class="fa-solid fa-signature"></i> SECTION 12 // CONCLUSION</div>
+          <h2 class="slide-title">Conclusion & Authorization Portal</h2>
+          <p class="slide-subtitle">Ready for immediate implementation, open to administrative feedback and adjustments.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Proposal Close -->
+          <div class="brutal-card step-reveal" data-step="1">
+            <h3 style="font-size: 1.3rem; margin-bottom: 12px;"><i class="fa-solid fa-award"></i> The Value Proposition</h3>
+            <div class="bullet-point">
+              <div class="point-icon"><i class="fa-solid fa-check"></i></div>
+              <span><strong>Structured Transition:</strong> Elevates PISJ-ES media into a disciplined, professionalized student powerhouse.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon"><i class="fa-solid fa-check"></i></div>
+              <span><strong>Phone Misuse Eradicated:</strong> Replaced by official school credentialing & badging protocol.</span>
+            </div>
+            <div class="bullet-point">
+              <div class="point-icon"><i class="fa-solid fa-check"></i></div>
+              <span><strong>Open to Guidance:</strong> Student leadership is completely receptive to feedback, adjustments, and recommendations from school leadership.</span>
+            </div>
+          </div>
+
+          <!-- Sign-Off Portal -->
+          <div class="brutal-card step-reveal" data-step="2" id="signatureBox" style="background: #FFFDF0; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div class="tag-pill" style="background: var(--ink); color:white; margin-bottom: 8px;">ADMINISTRATIVE ACTION</div>
+              <h3 style="font-size: 1.3rem; margin-bottom: 6px;">Official Authorization</h3>
+              <p style="font-size: 0.85rem; font-weight: 600; color: #555;">Signing authorizes badge issuance and OneDrive deployment.</p>
+            </div>
+
+            <!-- Animated Signature Fields -->
+            <div style="display:flex; flex-direction:column; gap: 14px; margin-top: 15px;">
+              
+              <!-- Principal -->
+              <div style="border-bottom: 2px dashed var(--ink); padding-bottom: 6px; display:flex; justify-content:space-between; align-items:flex-end;">
+                <div>
+                  <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800;">PRINCIPAL SIGNATURE:</div>
+                  <div style="font-size: 0.7rem; color: #777;">Pakistan International School Jeddah</div>
+                </div>
+                <!-- Animated SVG Signature -->
+                <svg width="140" height="40" viewBox="0 0 140 40">
+                  <path class="sig-path" d="M10,25 Q35,5 60,25 T110,18 Q130,10 135,30" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+
+              <!-- Deputy Head -->
+              <div style="border-bottom: 2px dashed var(--ink); padding-bottom: 6px; display:flex; justify-content:space-between; align-items:flex-end;">
+                <div>
+                  <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800;">DEPUTY HEAD SIGNATURE:</div>
+                  <div style="font-size: 0.7rem; color: #777;">Pakistan International School Jeddah</div>
+                </div>
+                <!-- Animated SVG Signature -->
+                <svg width="140" height="40" viewBox="0 0 140 40">
+                  <path class="sig-path" d="M12,28 Q40,8 55,20 T95,15 Q120,32 135,22" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="step-reveal" data-step="3" style="background: var(--yellow); padding: 10px; border: var(--border-thick); border-radius: 4px; text-align: center; font-family: var(--font-mono); font-weight: 900; font-size: 0.88rem;">
+          THANK YOU FOR EMPOWERING STUDENT EXCELLENCE // PAKISTAN INTERNATIONAL SCHOOL JEDDAH – ENGLISH SECTION
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Nav / Presenter Controls -->
+    <footer class="deck-footer">
+      <div class="step-counter-box">
+        <div class="counter-tag" id="slideIndexLabel">SLIDE 01 / 13</div>
+        <div class="substep-pill" id="stepIndicator">CLICK [NEXT] TO ADVANCE</div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="action-btn" id="prevBtn" title="Press Left Arrow or PageUp"><i class="fa-solid fa-arrow-left"></i> BACK</button>
+        <button class="action-btn" id="nextBtn" style="background: var(--yellow);" title="Press Space, Right Arrow, or Clicker"><span id="nextBtnText">REVEAL NEXT POINT</span> <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Presenter Engine Script -->
+  <script>
+    (function() {
+      const slides = document.querySelectorAll('.slide');
+      const slideLabel = document.getElementById('slideIndexLabel');
+      const stepIndicator = document.getElementById('stepIndicator');
+      const nextBtn = document.getElementById('nextBtn');
+      const nextBtnText = document.getElementById('nextBtnText');
+      const prevBtn = document.getElementById('prevBtn');
+      const signatureBox = document.getElementById('signatureBox');
+      
+      let currentSlide = 0;
+      let currentStep = 0;
+
+      // Typewriter Effect for Slide 1
+      function runTypewriter() {
+        const el = document.getElementById('heroTypewriter');
+        if (!el) return;
+        const text = "A Unified, Disciplined, and High-Standard Student Media Body.";
+        el.textContent = "";
+        let i = 0;
+        const timer = setInterval(() => {
+          if (i < text.length) {
+            el.textContent += text.charAt(i);
+            i++;
+          } else {
+            clearInterval(timer);
+          }
+        }, 32);
+      }
+      runTypewriter();
+
+      function getStepsForSlide(slideIndex) {
+        return slides[slideIndex].querySelectorAll('.step-reveal');
+      }
+
+      function updateSlideUI() {
+        slides.forEach((slide, idx) => {
+          slide.classList.toggle('active', idx === currentSlide);
+        });
+
+        const steps = getStepsForSlide(currentSlide);
+        const totalSteps = steps.length;
+
+        // Reveal steps up to currentStep
+        steps.forEach((el) => {
+          const stepNum = parseInt(el.getAttribute('data-step') || "1", 10);
+          if (stepNum <= currentStep) {
+            el.classList.add('revealed');
+          } else {
+            el.classList.remove('revealed');
+          }
+        });
+
+        // Trigger signature animation if on last slide and fully revealed
+        if (currentSlide === 12 && currentStep >= 2) {
+          signatureBox.classList.add('sig-drawn');
+        } else if (signatureBox) {
+          signatureBox.classList.remove('sig-drawn');
+        }
+
+        // Update Labels
+        const slidePad = String(currentSlide + 1).padStart(2, '0');
+        const totalPad = String(slides.length).padStart(2, '0');
+        slideLabel.textContent = `SLIDE ${slidePad} / ${totalPad}`;
+
+        if (totalSteps === 0 || currentStep >= totalSteps) {
+          stepIndicator.textContent = currentSlide === slides.length - 1 ? "PRESENTATION CONCLUDED" : "READY FOR NEXT SLIDE";
+          nextBtnText.textContent = currentSlide === slides.length - 1 ? "FINISH" : "NEXT SLIDE";
+          nextBtn.style.background = "var(--green)";
+        } else {
+          stepIndicator.textContent = `POINT ${currentStep + 1} OF ${totalSteps}`;
+          nextBtnText.textContent = "NEXT POINT";
+          nextBtn.style.background = "var(--yellow)";
+        }
+
+        prevBtn.style.opacity = (currentSlide === 0 && currentStep === 0) ? "0.4" : "1";
+      }
+
+      function advance() {
+        const steps = getStepsForSlide(currentSlide);
+        const totalSteps = steps.length;
+
+        // If there are unrevealed points on this slide, reveal the next point!
+        if (currentStep < totalSteps) {
+          currentStep++;
+          updateSlideUI();
+          return;
+        }
+
+        // Otherwise advance to the next slide
+        if (currentSlide < slides.length - 1) {
+          currentSlide++;
+          currentStep = 0; // Reset steps for new slide
+          updateSlideUI();
+        }
+      }
+
+      function stepBack() {
+        // If we can unreveal a point on this slide
+        if (currentStep > 0) {
+          currentStep--;
+          updateSlideUI();
+          return;
+        }
+
+        // Otherwise go to previous slide and show all its steps
+        if (currentSlide > 0) {
+          currentSlide--;
+          const steps = getStepsForSlide(currentSlide);
+          currentStep = steps.length; // Show fully revealed
+          updateSlideUI();
+        }
+      }
+
+      // Click / Presenter Button Listeners
+      nextBtn.addEventListener('click', advance);
+      prevBtn.addEventListener('click', stepBack);
+
+      // Presenter Remote & Keyboard Controls (Space, Enter, PageDown, RightArrow)
+      document.addEventListener('keydown', (e) => {
+        if ([' ', 'ArrowRight', 'PageDown', 'Enter'].includes(e.key)) {
+          e.preventDefault();
+          advance();
+        } else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) {
+          e.preventDefault();
+          stepBack();
+        } else if (e.key === 'f' || e.key === 'F') {
+          // Toggle Fullscreen
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          } else {
+            document.exitFullscreen();
+          }
+        }
+      });
+
+      updateSlideUI();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+/* ==========================================================================
+   PISJ-ES MEDIA SOCIETY - AMBIENT ANIMATIONS & SUBTLE MOVEMENTS
+   Presentation-First: Continuous, Non-Hover Micro-Movements
+   ========================================================================== */
+
+/* 1. Continuous Ambient Bobbing (Stickers & Badges) */
+@keyframes ambientBob {
+  0%, 100% {
+    transform: translateY(0px) rotate(var(--deg, -1.5deg));
+  }
+  50% {
+    transform: translateY(-5px) rotate(calc(var(--deg, -1.5deg) + 1.2deg));
+  }
+}
+
+.floating-sticker {
+  animation: ambientBob 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+.floating-sticker-alt {
+  animation: ambientBob 5s ease-in-out infinite;
+  animation-delay: -2.1s;
+  will-change: transform;
+}
+
+/* 2. Gentle Card Float (Breathing Card Dynamics - Zero Mouse Hover Required) */
+@keyframes cardFloatA {
+  0%, 100% {
+    transform: rotate(-1deg) translateY(0px);
+    transform: rotate(var(--base-rot, -1deg)) translateY(0px);
+  }
+  50% {
+    transform: rotate(-0.5deg) translateY(-4px);
+    transform: rotate(calc(var(--base-rot, -1deg) + 0.6deg)) translateY(-5px);
+  }
+}
+
+@keyframes cardFloatB {
+  0%, 100% {
+    transform: rotate(1deg) translateY(0px);
+    transform: rotate(var(--base-rot, 1.2deg)) translateY(0px);
+  }
+  50% {
+    transform: rotate(1.5deg) translateY(-4px);
+    transform: rotate(calc(var(--base-rot, 1.2deg) - 0.6deg)) translateY(-5px);
+  }
+}
+
+.float-tilt-left {
+  animation: cardFloatA 5.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.float-tilt-right {
+  animation: cardFloatB 6s ease-in-out infinite;
+  animation-delay: -1.5s;
+  animation-delay: -1.8s;
+  will-change: transform;
+}
+
+/* Problem Cards Unique Breathing Sway */
+@keyframes problemFloat1 {
+  0%, 100% { transform: rotate(-2.2deg) translateY(0); }
+  50% { transform: rotate(-1.5deg) translateY(-5px); }
+}
+
+@keyframes problemFloat2 {
+  0%, 100% { transform: rotate(1.8deg) translateY(0); }
+  50% { transform: rotate(2.4deg) translateY(-6px); }
+}
+
+@keyframes problemFloat3 {
+  0%, 100% { transform: rotate(-1.6deg) translateY(0); }
+  50% { transform: rotate(-1deg) translateY(-5px); }
+}
+
+@keyframes problemFloat4 {
+  0%, 100% { transform: rotate(2.2deg) translateY(0); }
+  50% { transform: rotate(1.6deg) translateY(-6px); }
+}
+
+.problem-card:nth-child(1) { animation: problemFloat1 5.8s ease-in-out infinite; }
+.problem-card:nth-child(2) { animation: problemFloat2 6.4s ease-in-out infinite -1.5s; }
+.problem-card:nth-child(3) { animation: problemFloat3 6.1s ease-in-out infinite -3s; }
+.problem-card:nth-child(4) { animation: problemFloat4 6.7s ease-in-out infinite -4.5s; }
+
+/* 3. Live REC Pulse & Glow */
+@keyframes recPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.9);
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+}
+
+.rec-dot {
+  width: 11px;
+  height: 11px;
+  background: var(--danger-red);
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  display: inline-block;
+  animation: recPulse 1.3s ease-in-out infinite;
+}
+
+/* 4. Audio Visualizer Equalizer Simulation */
+@keyframes eq1 { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+@keyframes eq2 { 0%, 100% { height: 15px; } 50% { height: 5px; } }
+@keyframes eq3 { 0%, 100% { height: 7px; } 50% { height: 18px; } }
+@keyframes eq4 { 0%, 100% { height: 16px; } 50% { height: 8px; } }
+
+.eq-container {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 18px;
+}
+
+.eq-bar {
+  width: 3px;
+  background: var(--ink);
+  border-radius: 1px;
+}
+
+.eq-bar:nth-child(1) { animation: eq1 0.75s ease-in-out infinite; }
+.eq-bar:nth-child(2) { animation: eq2 0.6s ease-in-out infinite; animation-delay: 0.15s; }
+.eq-bar:nth-child(3) { animation: eq3 0.85s ease-in-out infinite; animation-delay: 0.3s; }
+.eq-bar:nth-child(4) { animation: eq4 0.7s ease-in-out infinite; animation-delay: 0.45s; }
+
+/* 5. Clicker-Driven Step Reveal */
+.step-reveal {
+  opacity: 0;
+  transform: translateY(18px) scale(0.97);
+  transition: opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1), transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.step-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0px) scale(1);
+  pointer-events: auto;
+}
+
+/* 6. Shutter Optical Flash on Slide Advance */
+.shutter-flash-overlay {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.22s ease-out;
+}
+
+.shutter-flash-overlay.flashing {
+  opacity: 0.5;
+  transition: none;
+}
+
+/* 7. Stamp Slam on Ratification */
+@keyframes stampSlam {
+  0% {
+    opacity: 0;
+    transform: scale(2.6) rotate(-22deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-6deg);
+  }
+  80% {
+    transform: scale(1.06) rotate(-4deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-5deg);
+  }
+}
+
+.stamp-slam {
+  animation: stampSlam 0.48s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* 8. Signature Stroke Draw */
+.sig-path {
+  stroke-dasharray: 450;
+  stroke-dashoffset: 450;
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sig-drawn .sig-path {
+  stroke-dashoffset: 0;
+}
+
+/* 9. Typewriter Cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typing-cursor::after {
+  content: '▋';
+  margin-left: 4px;
+  animation: blink 0.9s infinite;
+  color: var(--neon-pink);
+}
+
+/* 10. Viewfinder Corner Brackets */
+.corner-bracket {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--ink);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.corner-tl { top: 6px; left: 6px; border-top: 2px solid; border-left: 2px solid; }
+.corner-tr { top: 6px; right: 6px; border-top: 2px solid; border-right: 2px solid; }
+.corner-bl { bottom: 6px; left: 6px; border-bottom: 2px solid; border-left: 2px solid; }
+.corner-br { bottom: 6px; right: 6px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* 11. Continuous Geometric Shapes Rotation */
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinSlowReverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.spin-slow {
+  animation: spinSlow 22s linear infinite;
+  transform-origin: center center;
+  display: inline-block;
+}
+
+.spin-slow-rev {
+  animation: spinSlowReverse 28s linear infinite;
+  transform-origin: center center;
+  display: inline-block;
+}
+
+/* 12. Pipeline Energy Beam Flow (Slide 9 Connector Pulse) */
+@keyframes pipelineFlow {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.pipeline-energy-track {
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, 
+    var(--neon-yellow) 0%, 
+    var(--neon-cyan) 20%, 
+    #3B82F6 40%, 
+    var(--neon-purple) 60%, 
+    var(--neon-orange) 80%, 
+    var(--neon-green) 100%);
+  background-size: 200% 100%;
+  animation: pipelineFlow 3.5s linear infinite;
+  border: 1px solid var(--ink);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+}
+
+/* 13. Live Status Glowing Pulse Ring */
+@keyframes livePulseRing {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.live-pulse-green {
+  animation: livePulseRing 1.8s infinite;
+}
+
+@keyframes livePulseCyan {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(0, 240, 255, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 240, 255, 0);
+  }
+}
+
+.live-pulse-cyan {
+  animation: livePulseCyan 1.8s infinite;
+}
+
+/* 14. Subtle Floating Bob for Shapes & Mini Badges */
+@keyframes gentleBob {
+  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50% { transform: translateY(-6px) rotate(calc(var(--rot, 0deg) + 2deg)); }
+}
+
+.gentle-bob {
+  animation: gentleBob 4.6s ease-in-out infinite;
+}
+
