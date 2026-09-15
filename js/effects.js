@@ -59,6 +59,32 @@ class DeckEffects {
       sigBox.classList.remove('sig-drawn');
     }
   }
+
+  /* Trigger Grand Finale Curtain */
+  triggerFinale() {
+    const overlay = document.getElementById('closingFinaleOverlay');
+    if (!overlay) return;
+    overlay.classList.add('active');
+
+    if (window.deckAudio) {
+      window.deckAudio.playStampSlam();
+      setTimeout(() => {
+        if (window.deckAudio) window.deckAudio.playShutter();
+      }, 400);
+    }
+  }
+
+  closeFinale() {
+    const overlay = document.getElementById('closingFinaleOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('active');
+  }
+
+  isFinaleOpen() {
+    const overlay = document.getElementById('closingFinaleOverlay');
+    return overlay ? overlay.classList.contains('active') : false;
+  }
 }
 
 window.deckEffects = new DeckEffects();
+

@@ -46,6 +46,30 @@ class DeckEngine {
       this.fsBtn.addEventListener('click', () => this.toggleFullscreen());
     }
 
+    // Finale Action Buttons
+    const replayBtn = document.getElementById('replayDeckBtn');
+    if (replayBtn) {
+      replayBtn.addEventListener('click', () => {
+        if (window.deckEffects) window.deckEffects.closeFinale();
+        this.goToSlide(0);
+      });
+    }
+
+    const overviewDeckBtn = document.getElementById('overviewDeckBtn');
+    if (overviewDeckBtn) {
+      overviewDeckBtn.addEventListener('click', () => {
+        if (window.deckEffects) window.deckEffects.closeFinale();
+        if (window.deckOverview) window.deckOverview.open();
+      });
+    }
+
+    const closeFinaleBtn = document.getElementById('closeFinaleBtn');
+    if (closeFinaleBtn) {
+      closeFinaleBtn.addEventListener('click', () => {
+        if (window.deckEffects) window.deckEffects.closeFinale();
+      });
+    }
+
     // Keyboard controls
     document.addEventListener('keydown', (e) => this.handleKeyDown(e));
 
@@ -152,6 +176,14 @@ class DeckEngine {
   advance() {
     const totalSteps = this.getMaxStepForSlide(this.currentSlide);
 
+    // If at the very end of the presentation (Slide 13, all steps revealed), trigger finale!
+    if (this.currentSlide === this.slides.length - 1 && this.currentStep >= totalSteps) {
+      if (window.deckEffects) {
+        window.deckEffects.triggerFinale();
+      }
+      return;
+    }
+
     // Advance point on current slide
     if (this.currentStep < totalSteps) {
       this.currentStep++;
@@ -174,6 +206,12 @@ class DeckEngine {
   }
 
   stepBack() {
+    // If finale is currently open, close it first
+    if (window.deckEffects && window.deckEffects.isFinaleOpen()) {
+      window.deckEffects.closeFinale();
+      return;
+    }
+
     // Un-reveal point on current slide
     if (this.currentStep > 0) {
       this.currentStep--;
@@ -196,6 +234,9 @@ class DeckEngine {
   }
 
   goToSlide(slideIndex) {
+    if (window.deckEffects && window.deckEffects.isFinaleOpen()) {
+      window.deckEffects.closeFinale();
+    }
     if (slideIndex >= 0 && slideIndex < this.slides.length) {
       this.currentSlide = slideIndex;
       this.currentStep = 0;
@@ -231,6 +272,27 @@ class DeckEngine {
   }
 
   handleKeyDown(e) {
+    // If finale overlay is open
+    if (window.deckEffects && window.deckEffects.isFinaleOpen()) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        window.deckEffects.closeFinale();
+        return;
+      }
+      if (e.key === 'r' || e.key === 'R') {
+        e.preventDefault();
+        window.deckEffects.closeFinale();
+        this.goToSlide(0);
+        return;
+      }
+      if (e.key === 'o' || e.key === 'O') {
+        e.preventDefault();
+        window.deckEffects.closeFinale();
+        if (window.deckOverview) window.deckOverview.open();
+        return;
+      }
+    }
+
     // Ignore key events if modal is open (except Escape)
     if (window.deckOverview && window.deckOverview.isOpen) {
       if (e.key === 'Escape') {
