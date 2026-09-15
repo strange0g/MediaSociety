@@ -3,87 +3,65 @@
    Presentation-First: Continuous, Non-Hover Micro-Movements
    ========================================================================== */
 
-/* 1. Continuous Ambient Bobbing (Stickers & Badges) */
-@keyframes ambientBob {
+/* 1. Continuous Ambient Floating & Sway (Preserves --rot angle) */
+@keyframes ambientFloat {
   0%, 100% {
-    transform: translateY(0px) rotate(var(--deg, -1.5deg));
+    transform: translateY(0px) rotate(var(--rot, 0deg));
   }
   50% {
-    transform: translateY(-5px) rotate(calc(var(--deg, -1.5deg) + 1.2deg));
+    transform: translateY(-5px) rotate(calc(var(--rot, 0deg) + var(--rot-wobble, 0.4deg)));
   }
 }
 
+.ambient-float-1 {
+  animation: ambientFloat 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+.ambient-float-2 {
+  animation: ambientFloat 5.2s ease-in-out infinite -1.6s;
+  will-change: transform;
+}
+
+.ambient-float-3 {
+  animation: ambientFloat 4.8s ease-in-out infinite -2.8s;
+  will-change: transform;
+}
+
+.ambient-float-4 {
+  animation: ambientFloat 6.0s ease-in-out infinite -3.5s;
+  will-change: transform;
+}
+
+/* Backwards compatibility */
 .floating-sticker {
-  animation: ambientBob 4.2s ease-in-out infinite;
+  --rot: var(--deg, -1.5deg);
+  animation: ambientFloat 4.2s ease-in-out infinite;
   will-change: transform;
 }
 
 .floating-sticker-alt {
-  animation: ambientBob 5s ease-in-out infinite;
-  animation-delay: -2.1s;
+  --rot: var(--deg, 1.5deg);
+  animation: ambientFloat 5s ease-in-out infinite -2.1s;
   will-change: transform;
 }
 
-/* 2. Gentle Card Float (Breathing Card Dynamics - Zero Mouse Hover Required) */
-@keyframes cardFloatA {
-  0%, 100% {
-    transform: rotate(-1deg) translateY(0px);
-    transform: rotate(var(--base-rot, -1deg)) translateY(0px);
-  }
-  50% {
-    transform: rotate(-0.5deg) translateY(-4px);
-    transform: rotate(calc(var(--base-rot, -1deg) + 0.6deg)) translateY(-5px);
-  }
+/* 2. Dynamic Card Tilt & Neo-Brutalist Shapes */
+.card-tilt-1 { --rot: var(--rot-tilt-1, -1.8deg); transform: rotate(var(--rot)); }
+.card-tilt-2 { --rot: var(--rot-tilt-2, 1.6deg); transform: rotate(var(--rot)); }
+.card-tilt-3 { --rot: var(--rot-tilt-3, -1.2deg); transform: rotate(var(--rot)); }
+.card-tilt-4 { --rot: var(--rot-tilt-4, 2deg); transform: rotate(var(--rot)); }
+
+/* Interactive Hover Lift & Straighten */
+.card-tilt-hover {
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, z-index 0s;
 }
 
-@keyframes cardFloatB {
-  0%, 100% {
-    transform: rotate(1deg) translateY(0px);
-    transform: rotate(var(--base-rot, 1.2deg)) translateY(0px);
-  }
-  50% {
-    transform: rotate(1.5deg) translateY(-4px);
-    transform: rotate(calc(var(--base-rot, 1.2deg) - 0.6deg)) translateY(-5px);
-  }
+.card-tilt-hover:hover {
+  transform: rotate(0deg) translateY(-8px) scale(1.025) !important;
+  box-shadow: 10px 10px 0px var(--ink) !important;
+  z-index: 40;
 }
-
-.float-tilt-left {
-  animation: cardFloatA 5.5s ease-in-out infinite;
-  will-change: transform;
-}
-
-.float-tilt-right {
-  animation: cardFloatB 6s ease-in-out infinite;
-  animation-delay: -1.5s;
-  animation-delay: -1.8s;
-  will-change: transform;
-}
-
-/* Problem Cards Unique Breathing Sway */
-@keyframes problemFloat1 {
-  0%, 100% { transform: rotate(-2.2deg) translateY(0); }
-  50% { transform: rotate(-1.5deg) translateY(-5px); }
-}
-
-@keyframes problemFloat2 {
-  0%, 100% { transform: rotate(1.8deg) translateY(0); }
-  50% { transform: rotate(2.4deg) translateY(-6px); }
-}
-
-@keyframes problemFloat3 {
-  0%, 100% { transform: rotate(-1.6deg) translateY(0); }
-  50% { transform: rotate(-1deg) translateY(-5px); }
-}
-
-@keyframes problemFloat4 {
-  0%, 100% { transform: rotate(2.2deg) translateY(0); }
-  50% { transform: rotate(1.6deg) translateY(-6px); }
-}
-
-.problem-card:nth-child(1) { animation: problemFloat1 5.8s ease-in-out infinite; }
-.problem-card:nth-child(2) { animation: problemFloat2 6.4s ease-in-out infinite -1.5s; }
-.problem-card:nth-child(3) { animation: problemFloat3 6.1s ease-in-out infinite -3s; }
-.problem-card:nth-child(4) { animation: problemFloat4 6.7s ease-in-out infinite -4.5s; }
 
 /* 3. Live REC Pulse & Glow */
 @keyframes recPulse {
@@ -133,18 +111,38 @@
 .eq-bar:nth-child(3) { animation: eq3 0.85s ease-in-out infinite; animation-delay: 0.3s; }
 .eq-bar:nth-child(4) { animation: eq4 0.7s ease-in-out infinite; animation-delay: 0.45s; }
 
-/* 5. Clicker-Driven Step Reveal */
+/* 5. Clicker-Driven Step Reveal with Dynamic Tilt Support */
 .step-reveal {
   opacity: 0;
-  transform: translateY(18px) scale(0.97);
-  transition: opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1), transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateY(22px) rotate(var(--rot, 0deg)) scale(0.96);
+  transition: opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.25s ease;
   pointer-events: none;
+}
+
+.step-reveal:not(.revealed) {
+  animation: none !important;
 }
 
 .step-reveal.revealed {
   opacity: 1;
-  transform: translateY(0px) scale(1);
+  transform: translateY(0px) rotate(var(--rot, 0deg)) scale(1);
   pointer-events: auto;
+}
+
+/* Continuous Ambient Float starts smoothly after entrance transition completes */
+.step-reveal.revealed.ambient-float-1 {
+  animation: ambientFloat 4.2s ease-in-out 0.45s infinite;
+}
+.step-reveal.revealed.ambient-float-2 {
+  animation: ambientFloat 5.2s ease-in-out 0.45s infinite;
+}
+.step-reveal.revealed.ambient-float-3 {
+  animation: ambientFloat 4.8s ease-in-out 0.45s infinite;
+}
+.step-reveal.revealed.ambient-float-4 {
+  animation: ambientFloat 6.0s ease-in-out 0.45s infinite;
 }
 
 /* 6. Shutter Optical Flash on Slide Advance */
@@ -225,65 +223,75 @@
 .corner-bl { bottom: 6px; left: 6px; border-bottom: 2px solid; border-left: 2px solid; }
 .corner-br { bottom: 6px; right: 6px; border-bottom: 2px solid; border-right: 2px solid; }
 
-/* 11. Continuous Geometric Shapes Rotation */
-@keyframes spinSlow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes spinSlowReverse {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
-}
-
-.spin-slow {
-  animation: spinSlow 22s linear infinite;
-  transform-origin: center center;
-  display: inline-block;
-}
-
-.spin-slow-rev {
-  animation: spinSlowReverse 28s linear infinite;
-  transform-origin: center center;
-  display: inline-block;
-}
-
-/* 12. Pipeline Energy Beam Flow (Slide 9 Connector Pulse) */
-@keyframes pipelineFlow {
+/* 11. Slide 9 Broadcast Pipeline Animations */
+@keyframes pipelineBeam {
   0% {
-    background-position: -200% 0;
+    background-position: 0% 50%;
   }
   100% {
-    background-position: 200% 0;
+    background-position: 200% 50%;
   }
 }
 
 .pipeline-energy-track {
-  position: relative;
-  height: 6px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, 
-    var(--neon-yellow) 0%, 
-    var(--neon-cyan) 20%, 
-    #3B82F6 40%, 
-    var(--neon-purple) 60%, 
-    var(--neon-orange) 80%, 
-    var(--neon-green) 100%);
+  background: linear-gradient(90deg, #FFE600, #00F0FF, #3B82F6, #8B5CF6, #FF6600, #10B981, #FFE600);
   background-size: 200% 100%;
-  animation: pipelineFlow 3.5s linear infinite;
-  border: 1px solid var(--ink);
-  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+  animation: pipelineBeam 4s linear infinite;
 }
 
-/* 13. Live Status Glowing Pulse Ring */
-@keyframes livePulseRing {
+@keyframes chevronFlow {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateX(5px);
+    opacity: 1;
+    color: var(--neon-pink);
+  }
+}
+
+.pipeline-chevron-flow {
+  animation: chevronFlow 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 4px 4px 0px var(--ink);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(0, 240, 255, 0.6), 4px 4px 0px var(--ink);
+  }
+}
+
+.pulse-active-glow {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+/* 12. Hazard Diagonal Stripes Animation */
+@keyframes hazardMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+
+.hazard-tape-animated {
+  background-size: 28px 28px !important;
+  animation: hazardMove 2.5s linear infinite;
+}
+
+/* 13. Radar Beacon Status Pulse */
+@keyframes beaconPing {
   0% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
   }
   70% {
     transform: scale(1);
-    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
   }
   100% {
     transform: scale(0.95);
@@ -291,36 +299,25 @@
   }
 }
 
-.live-pulse-green {
-  animation: livePulseRing 1.8s infinite;
+.beacon-dot-live {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--neon-green);
+  display: inline-block;
+  animation: beaconPing 1.8s cubic-bezier(0.24, 0, 0.38, 1) infinite;
 }
 
-@keyframes livePulseCyan {
+/* 14. Subtle Graphic Stamp / Seal Slow Spin */
+@keyframes slowSpin {
   0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7);
-  }
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 8px rgba(0, 240, 255, 0);
+    transform: rotate(0deg);
   }
   100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(0, 240, 255, 0);
+    transform: rotate(360deg);
   }
 }
 
-.live-pulse-cyan {
-  animation: livePulseCyan 1.8s infinite;
+.slow-spin {
+  animation: slowSpin 25s linear infinite;
 }
-
-/* 14. Subtle Floating Bob for Shapes & Mini Badges */
-@keyframes gentleBob {
-  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
-  50% { transform: translateY(-6px) rotate(calc(var(--rot, 0deg) + 2deg)); }
-}
-
-.gentle-bob {
-  animation: gentleBob 4.6s ease-in-out infinite;
-}
-

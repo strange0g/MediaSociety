@@ -395,3 +395,200 @@
   border-color: var(--neon-pink);
   box-shadow: 0 0 0 4px var(--neon-pink);
 }
+
+/* ==========================================================================
+   GRAND FINALE CLOSING CURTAIN / CELEBRATION OVERLAY
+   ========================================================================== */
+.closing-finale-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 11, 14, 0.88);
+  backdrop-filter: blur(10px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+  padding: 24px;
+}
+
+.closing-finale-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.finale-curtain-card {
+  background: var(--paper);
+  border: 4.5px solid var(--ink);
+  box-shadow: 18px 18px 0 var(--ink);
+  border-radius: 10px;
+  width: 100%;
+  max-width: 880px;
+  padding: 34px 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transform: translateY(-130%) scale(0.92);
+  transition: transform 0.68s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.closing-finale-overlay.active .finale-curtain-card {
+  transform: translateY(0) scale(1);
+}
+
+.finale-hazard-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--neon-yellow),
+    var(--neon-yellow) 10px,
+    var(--ink) 10px,
+    var(--ink) 20px
+  );
+  border-bottom: 2px solid var(--ink);
+}
+
+.finale-subbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink);
+  color: var(--neon-yellow);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 900;
+  padding: 5px 16px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  margin-top: 10px;
+  box-shadow: 3px 3px 0 var(--neon-pink);
+}
+
+.finale-title {
+  font-family: var(--font-display);
+  font-size: 4.4rem;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -2px;
+  margin: 16px 0 8px 0;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.finale-title-accent {
+  background: var(--neon-yellow);
+  padding: 0 14px;
+  border: var(--border-thick);
+  box-shadow: 4px 4px 0 var(--ink);
+  display: inline-block;
+  transform: rotate(-1.5deg);
+  animation: finaleTitlePop 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes finaleTitlePop {
+  0% { transform: rotate(-1.5deg) scale(1); }
+  100% { transform: rotate(1.2deg) scale(1.03); }
+}
+
+.finale-society-name {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.finale-subtitle {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  max-width: 650px;
+  line-height: 1.45;
+  margin-bottom: 18px;
+}
+
+.finale-pillars-bar {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.finale-pillar-pill {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 900;
+  padding: 5px 12px;
+  border-radius: 4px;
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.finale-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.finale-btn {
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 900;
+  padding: 9px 20px;
+  border: var(--border-thick);
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.finale-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.finale-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.finale-btn-primary {
+  background: var(--neon-yellow);
+  color: var(--ink);
+}
+
+.finale-btn-secondary {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.finale-btn-close {
+  background: var(--neon-pink);
+  color: white;
+}
+
