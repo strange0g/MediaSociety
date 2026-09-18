@@ -15,6 +15,13 @@
   flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease;
+}
+
+.brutal-card:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: var(--shadow-lg);
+  z-index: 10;
 }
 
 /* Tape Strip on Cards */

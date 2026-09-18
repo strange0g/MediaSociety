@@ -321,3 +321,17 @@
 .slow-spin {
   animation: slowSpin 25s linear infinite;
 }
+
+/* 15. Pulse Glow Accent for Badges & Buttons */
+@keyframes neonPulseGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(255, 46, 147, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(255, 46, 147, 0.85));
+  }
+}
+
+.neon-glow-pink {
+  animation: neonPulseGlow 2.2s ease-in-out infinite;
+}
