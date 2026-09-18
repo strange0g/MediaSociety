@@ -18,7 +18,9 @@ class DeckEffects {
     this.shutterOverlay.classList.add('flashing');
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        this.shutterOverlay.classList.remove('flashing');
+        setTimeout(() => {
+          this.shutterOverlay.classList.remove('flashing');
+        }, 120);
       });
     });
   }
