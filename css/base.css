@@ -119,6 +119,13 @@ body {
   box-shadow: none;
 }
 
+.icon-control-btn:focus-visible,
+.action-btn:focus-visible,
+.finale-btn:focus-visible {
+  outline: 3px solid var(--neon-pink);
+  outline-offset: 2px;
+}
+
 /* Top Progress Bar */
 .deck-progress-bar {
   position: absolute;
