@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.sqlite
+*.db
+*.db-shm
+*.db-wal
+.env
+*.log
+screenshot_*.png
+verify_playwright.js
