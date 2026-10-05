@@ -78,19 +78,19 @@ class DeckEngine {
       },
       {
         tag: "SLIDE 09 // 6-STEP LIFECYCLE",
-        main: "Demonstrate systematic discipline: Planning -> Coverage -> Central OneDrive Archiving -> Post-Production -> Admin Approval -> Release.",
+        main: "Demonstrate systematic discipline: Planning -> Coverage -> Archiving (Official OneDrive Vault) -> Post-Production -> Executive Approval -> Release.",
         focus: "Rigorous SLA: Raw footage archived within 12 hours; edited deliverables submitted within 24-48 hours.",
         qa: "Q: What if an emergency release is needed? A: Fast-track protocol enables expedited Co-Head pre-screen and instant executive sign-off."
       },
       {
         tag: "SLIDE 10 // ZERO-DISRUPTION ACADEMICS",
-        main: "Emphasize our uncompromising academic guarantee: Mandatory blackout during Mid-terms, Finals, and Mock exam periods. No coverage during class hours without advance written permission.",
+        main: "Emphasize our uncompromising academic guarantee: Mandatory Zero-Disruption Blackout during Mid-terms, Finals, and Mock exam periods. No coverage during class hours without advance written permission.",
         focus: "'Students first, creators second.' Active members must maintain satisfactory academic standing, or coverage privileges are suspended.",
-        qa: "Q: How do we track student grades? A: Co-Heads cross-check term report cards and enforce automatic academic pause if needed."
+        qa: "Q: How do we track student grades? A: Founding Co-Heads cross-check term report cards and enforce automatic academic pause if needed."
       },
       {
         tag: "SLIDE 11 // TWO-TIER APPROVAL GATES",
-        main: "Walk through the two mandatory security gates: Gate 01: Co-Head Quality & Decorum Audit. Gate 02: Principal & Deputy Head Executive Authorization.",
+        main: "Walk through the mandatory Two-Tier Approval Gate: Gate 01: Founding Co-Heads Quality & Decorum Audit. Gate 02: Principal & Deputy Head Executive Authorization.",
         focus: "ZERO content goes public without executive sign-off. Society members NEVER hold school social media login credentials.",
         qa: "Q: Who uploads to school social media? A: Approved media is handed over directly to the school's official PR coordinator / administrative channel."
       },
