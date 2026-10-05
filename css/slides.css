@@ -7,7 +7,7 @@
    SLIDE 1: COVER HERO
    -------------------------------------------------------------------------- */
 .hero-card {
-  padding: 42px 48px;
+  padding: 36px 42px;
   background: var(--paper);
   box-shadow: 14px 14px 0 var(--ink);
   position: relative;
