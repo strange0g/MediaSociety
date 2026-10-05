@@ -10,20 +10,26 @@ class DeckAudioEngine {
   }
 
   init() {
-    if (!this.ctx) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (AudioCtx) {
-        this.ctx = new AudioCtx();
+    try {
+      if (!this.ctx) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          this.ctx = new AudioCtx();
+        }
       }
-    }
-    if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(() => {});
+      }
+    } catch (e) {
+      console.warn("AudioContext init failed", e);
     }
   }
 
   toggleMute() {
     this.isMuted = !this.isMuted;
-    localStorage.setItem('deck_muted', String(this.isMuted));
+    try {
+      localStorage.setItem('deck_muted', String(this.isMuted));
+    } catch (e) {}
     return this.isMuted;
   }
 
@@ -31,9 +37,10 @@ class DeckAudioEngine {
   playShutter() {
     if (this.isMuted) return;
     this.init();
-    if (!this.ctx) return;
+    if (!this.ctx || this.ctx.state !== 'running') return;
 
-    const now = this.ctx.currentTime;
+    try {
+      const now = this.ctx.currentTime;
     
     // Blade click 1 (mirror up)
     const osc1 = this.ctx.createOscillator();
@@ -60,15 +67,17 @@ class DeckAudioEngine {
     gain2.connect(this.ctx.destination);
     osc2.start(now + 0.045);
     osc2.stop(now + 0.09);
+    } catch (e) {}
   }
 
   /* Tactile Mechanical Step Click (Point Reveal) */
   playStepClick() {
     if (this.isMuted) return;
     this.init();
-    if (!this.ctx) return;
+    if (!this.ctx || this.ctx.state !== 'running') return;
 
-    const now = this.ctx.currentTime;
+    try {
+      const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
@@ -83,15 +92,17 @@ class DeckAudioEngine {
     gain.connect(this.ctx.destination);
     osc.start(now);
     osc.stop(now + 0.025);
+    } catch (e) {}
   }
 
   /* Deep Rubber Stamp Slam (Ratification) */
   playStampSlam() {
     if (this.isMuted) return;
     this.init();
-    if (!this.ctx) return;
+    if (!this.ctx || this.ctx.state !== 'running') return;
 
-    const now = this.ctx.currentTime;
+    try {
+      const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
@@ -106,15 +117,17 @@ class DeckAudioEngine {
     gain.connect(this.ctx.destination);
     osc.start(now);
     osc.stop(now + 0.22);
+    } catch (e) {}
   }
 
   /* Celebratory Fanfare Arpeggio (Grand Finale Celebration) */
   playFanfare() {
     if (this.isMuted) return;
     this.init();
-    if (!this.ctx) return;
+    if (!this.ctx || this.ctx.state !== 'running') return;
 
-    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50]; // C Major arpeggio
+    try {
+      const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50]; // C Major arpeggio
     const now = this.ctx.currentTime;
     notes.forEach((freq, idx) => {
       const startTime = now + idx * 0.065;
@@ -128,16 +141,18 @@ class DeckAudioEngine {
       gain.connect(this.ctx.destination);
       osc.start(startTime);
       osc.stop(startTime + (idx === notes.length - 1 ? 0.6 : 0.22));
-    });
+      });
+    } catch (e) {}
   }
 
   /* Smooth Air Whoosh (Transitions / Modals) */
   playWhoosh() {
     if (this.isMuted) return;
     this.init();
-    if (!this.ctx) return;
+    if (!this.ctx || this.ctx.state !== 'running') return;
 
-    const now = this.ctx.currentTime;
+    try {
+      const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     osc.type = 'sine';
@@ -149,8 +164,26 @@ class DeckAudioEngine {
     gain.connect(this.ctx.destination);
     osc.start(now);
     osc.stop(now + 0.12);
+    } catch (e) {}
   }
 }
 
 window.deckAudio = new DeckAudioEngine();
 
+
+// Add user gesture listeners to initialize audio context
+const initAudioOnInteraction = () => {
+  if (window.deckAudio) {
+    window.deckAudio.init();
+    // Once initialized, remove the listeners
+    if (window.deckAudio.ctx && window.deckAudio.ctx.state === 'running') {
+      document.removeEventListener('click', initAudioOnInteraction);
+      document.removeEventListener('keydown', initAudioOnInteraction);
+      document.removeEventListener('touchstart', initAudioOnInteraction);
+    }
+  }
+};
+
+document.addEventListener('click', initAudioOnInteraction);
+document.addEventListener('keydown', initAudioOnInteraction);
+document.addEventListener('touchstart', initAudioOnInteraction);
