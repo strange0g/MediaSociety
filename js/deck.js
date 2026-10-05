@@ -66,9 +66,9 @@ class DeckEngine {
       },
       {
         tag: "SLIDE 07 // HIERARCHY & GOVERNANCE",
-        main: "Detail the clean 3-tier chain of command: Tier 1: Principal & Deputy Head (Executive Authority); Tier 2: Male Head & Female Head (Operational Leadership); Tier 3: Society Members.",
+        main: "Detail the clean 3-tier chain of command: Tier 1: Executive Oversight (Principal & Deputy Head); Tier 2: Founding Co-Heads (Male Head & Female Head); Tier 3: Society Members & Field Crews.",
         focus: "No middle-tier bureaucracy. Direct communication, fast turnaround, and total administrative supremacy.",
-        qa: "Q: Who has final say on contentious content? A: The Principal and Deputy Head hold absolute veto and approval authority."
+        qa: "Q: Who has final say on contentious content? A: The Executive Oversight via the Two-Tier Approval Gate holds absolute veto and approval authority."
       },
       {
         tag: "SLIDE 08 // INTER-SOCIETY SYNERGY",
@@ -96,7 +96,7 @@ class DeckEngine {
       },
       {
         tag: "SLIDE 12 // MEMBERSHIP ROSTER",
-        main: "Introduce our dedicated founding cohort of 8 A2 senior students (4 boys, 4 girls across classes A2-B4, A2-G5, A2-G4, A2-B7, A2-B6). Highlight our planned merit-based junior recruitment.",
+        main: "Introduce our dedicated founding cohort of 8 A2 senior students organized into Male Wing and Female Wing. Highlight our planned merit-based junior recruitment.",
         focus: "Balanced gender representation, high academic calibre, and proven multi-disciplinary skills in photography, editing, and graphic design.",
         qa: "Q: Why are they all A2? A: Initial founding cohort to set immediate professional standards; recruitment across younger grades starts next month."
       },
