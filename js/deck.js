@@ -284,6 +284,10 @@ class DeckEngine {
   }
 
   advance() {
+    this.next();
+  }
+
+  next() {
     const totalSteps = this.getMaxStepForSlide(this.currentSlide);
 
     // If at the very end of the presentation (Slide 13, all steps revealed), trigger finale!
@@ -316,6 +320,10 @@ class DeckEngine {
   }
 
   stepBack() {
+    this.prev();
+  }
+
+  prev() {
     // If finale is currently open, close it first
     if (window.deckEffects && window.deckEffects.isFinaleOpen()) {
       window.deckEffects.closeFinale();
@@ -344,6 +352,10 @@ class DeckEngine {
   }
 
   goToSlide(slideIndex) {
+    this.goTo(slideIndex);
+  }
+
+  goTo(slideIndex) {
     if (window.deckEffects && window.deckEffects.isFinaleOpen()) {
       window.deckEffects.closeFinale();
     }
@@ -354,6 +366,18 @@ class DeckEngine {
       if (window.deckEffects) window.deckEffects.triggerShutterFlash();
       this.updateUI();
     }
+  }
+
+  toggleStep() {
+    const totalSteps = this.getMaxStepForSlide(this.currentSlide);
+    if (this.currentStep < totalSteps) {
+      this.currentStep++;
+      if (window.deckAudio) window.deckAudio.playStepClick();
+    } else {
+      this.currentStep--;
+      if (window.deckAudio) window.deckAudio.playStepClick();
+    }
+    this.updateUI();
   }
 
   toggleSound() {
