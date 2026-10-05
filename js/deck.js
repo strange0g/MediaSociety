@@ -54,7 +54,7 @@ class DeckEngine {
       },
       {
         tag: "SLIDE 05 // SCOPE OF WORK",
-        main: "Explain the 4 full-service capabilities: Professional Photography, Cinematic Videography (reels & full recordings), Graphic Design (posters, banners, displays), and Disciplined Post-Production.",
+        main: "Explain the 4 full-service capabilities: Professional Photography, Cinematic Video (reels & full recordings), Graphic Design (posters, banners, displays), and Disciplined Post-Production.",
         focus: "Comprehensive in-house media agency for the school. No need to outsource or scramble for volunteer editors.",
         qa: "Q: Do we print posters? A: We design high-res print-ready graphics formatted for the school's existing display screens and bulletin boards."
       },
@@ -78,8 +78,8 @@ class DeckEngine {
       },
       {
         tag: "SLIDE 09 // 6-STEP LIFECYCLE",
-        main: "Demonstrate systematic discipline: Planning -> Coverage -> Central OneDrive Archiving -> Post-Production -> Admin Approval -> Release.",
-        focus: "Rigorous SLA: Raw footage archived within 12 hours; edited deliverables submitted within 24-48 hours.",
+        main: "Demonstrate systematic discipline: Planning -> Coverage -> Archiving (Official OneDrive Vault) -> Post-Production -> Executive Approval -> Release.",
+        focus: "Rigorous SLA badges applied across pipeline stages: T-0, T+12h, T+24h, T+48h. Constant adherence to Zero-Disruption Academic Blackout.",
         qa: "Q: What if an emergency release is needed? A: Fast-track protocol enables expedited Co-Head pre-screen and instant executive sign-off."
       },
       {
