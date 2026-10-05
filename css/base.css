@@ -148,11 +148,11 @@ body {
   visibility: hidden;
   transform: scale(0.98) translateY(8px);
   transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
-  padding: 22px 38px 18px 38px;
+  padding: clamp(12px, 2.5vh, 22px) clamp(20px, 3.5vw, 38px) clamp(10px, 2vh, 18px) clamp(20px, 3.5vw, 38px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 10px;
+  gap: clamp(6px, 1.2vh, 10px);
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
@@ -210,7 +210,7 @@ body {
 
 .slide-title {
   font-family: var(--font-display);
-  font-size: 2.05rem;
+  font-size: clamp(1.6rem, 3.5vh, 2.05rem);
   font-weight: 900;
   line-height: 1.05;
   letter-spacing: -0.8px;
@@ -218,7 +218,7 @@ body {
 }
 
 .slide-subtitle {
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 1.5vh, 0.9rem);
   font-weight: 700;
   color: #4b4f58;
   margin-top: 3px;

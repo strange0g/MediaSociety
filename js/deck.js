@@ -54,7 +54,7 @@ class DeckEngine {
       },
       {
         tag: "SLIDE 05 // SCOPE OF WORK",
-        main: "Explain the 4 full-service capabilities: Professional Photography, Cinematic Videography (reels & full recordings), Graphic Design (posters, banners, displays), and Disciplined Post-Production.",
+        main: "Explain the 4 full-service capabilities: Professional Photography, Cinematic Video (reels & full recordings), Graphic Design (posters, banners, displays), and Disciplined Post-Production.",
         focus: "Comprehensive in-house media agency for the school. No need to outsource or scramble for volunteer editors.",
         qa: "Q: Do we print posters? A: We design high-res print-ready graphics formatted for the school's existing display screens and bulletin boards."
       },
@@ -66,9 +66,9 @@ class DeckEngine {
       },
       {
         tag: "SLIDE 07 // HIERARCHY & GOVERNANCE",
-        main: "Detail the clean 3-tier chain of command: Tier 1: Principal & Deputy Head (Executive Authority); Tier 2: Male Head & Female Head (Operational Leadership); Tier 3: Society Members.",
+        main: "Detail the clean 3-tier chain of command: Tier 1: Executive Oversight (Principal & Deputy Head); Tier 2: Founding Co-Heads (Male Head & Female Head); Tier 3: Society Members & Field Crews.",
         focus: "No middle-tier bureaucracy. Direct communication, fast turnaround, and total administrative supremacy.",
-        qa: "Q: Who has final say on contentious content? A: The Principal and Deputy Head hold absolute veto and approval authority."
+        qa: "Q: Who has final say on contentious content? A: The Executive Oversight via the Two-Tier Approval Gate holds absolute veto and approval authority."
       },
       {
         tag: "SLIDE 08 // INTER-SOCIETY SYNERGY",
@@ -78,8 +78,8 @@ class DeckEngine {
       },
       {
         tag: "SLIDE 09 // 6-STEP LIFECYCLE",
-        main: "Demonstrate systematic discipline: Planning -> Coverage -> Central OneDrive Archiving -> Post-Production -> Admin Approval -> Release.",
-        focus: "Rigorous SLA: Raw footage archived within 12 hours; edited deliverables submitted within 24-48 hours.",
+        main: "Demonstrate systematic discipline: Planning -> Coverage -> Archiving (Official OneDrive Vault) -> Post-Production -> Executive Approval -> Release.",
+        focus: "Rigorous SLA badges applied across pipeline stages: T-0, T+12h, T+24h, T+48h. Constant adherence to Zero-Disruption Academic Blackout.",
         qa: "Q: What if an emergency release is needed? A: Fast-track protocol enables expedited Co-Head pre-screen and instant executive sign-off."
       },
       {
@@ -96,7 +96,7 @@ class DeckEngine {
       },
       {
         tag: "SLIDE 12 // MEMBERSHIP ROSTER",
-        main: "Introduce our dedicated founding cohort of 8 A2 senior students (4 boys, 4 girls across classes A2-B4, A2-G5, A2-G4, A2-B7, A2-B6). Highlight our planned merit-based junior recruitment.",
+        main: "Introduce our dedicated founding cohort of 8 A2 senior students organized into Male Wing and Female Wing. Highlight our planned merit-based junior recruitment.",
         focus: "Balanced gender representation, high academic calibre, and proven multi-disciplinary skills in photography, editing, and graphic design.",
         qa: "Q: Why are they all A2? A: Initial founding cohort to set immediate professional standards; recruitment across younger grades starts next month."
       },
@@ -108,6 +108,12 @@ class DeckEngine {
       }
     ];
   }
+
+  // Public Aliases
+  next() { this.advance(); }
+  prev() { this.stepBack(); }
+  toggleStep() { this.advance(); }
+  goTo(index) { this.goToSlide(index); }
 
   init() {
     this.slides = document.querySelectorAll('.slide');
