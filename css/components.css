@@ -15,6 +15,18 @@
   flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
+  --rot: -1.5deg;
+  transform: rotate(var(--rot));
+}
+
+.brutal-card:nth-child(even) {
+  --rot: 1.8deg;
+}
+
+.brutal-card.snap-straight:hover,
+.brutal-card.snap-straight:focus-visible {
+  transform: rotate(0deg) translateY(-6px) scale(1.02);
+  box-shadow: 10px 10px 0px var(--ink);
 }
 
 /* Tape Strip on Cards */
@@ -94,6 +106,12 @@
   border: var(--border-thin);
   border-radius: 4px;
   background: var(--paper);
+  --rot: -1.5deg;
+  transform: rotate(var(--rot));
+}
+
+.tag-pill:nth-child(even) {
+  --rot: 1.8deg;
 }
 
 /* Viewfinder Spec Tag */
@@ -107,6 +125,8 @@
   border-radius: 2px;
   background: rgba(0, 0, 0, 0.04);
   display: inline-block;
+  --rot: -1.5deg;
+  transform: rotate(var(--rot));
 }
 
 /* Bottom Anchor Banner (Fills bottom of slides cleanly) */
@@ -167,11 +187,19 @@
   position: relative;
   transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, background 0.25s ease;
   overflow: hidden;
+  --rot: -1.5deg;
+  transform: rotate(var(--rot));
 }
 
-.pipe-step:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: var(--shadow-md);
+.pipe-step:nth-child(even) {
+  --rot: 1.8deg;
+}
+
+.pipe-step:hover,
+.pipe-step.snap-straight:hover,
+.pipe-step.snap-straight:focus-visible {
+  transform: rotate(0deg) translateY(-6px) scale(1.02) !important;
+  box-shadow: 10px 10px 0px var(--ink) !important;
   z-index: 15;
 }
 

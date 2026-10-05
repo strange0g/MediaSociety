@@ -109,6 +109,12 @@ class DeckEngine {
     ];
   }
 
+  // Public Aliases
+  next() { this.advance(); }
+  prev() { this.stepBack(); }
+  toggleStep() { this.advance(); }
+  goTo(index) { this.goToSlide(index); }
+
   init() {
     this.slides = document.querySelectorAll('.slide');
     this.slideLabel = document.getElementById('slideIndexLabel');

@@ -1,0 +1,11 @@
+127.0.0.1 - - [05/Oct/2026 11:46:35] "GET /PISJ-ES_Media_Society_Presentation.html HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 11:46:36] "GET /css/variables.css HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 11:46:36] "GET /css/animations.css HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 11:46:36] "GET /css/base.css HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 11:46:36] "GET /css/components.css HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 11:46:36] "GET /css/slides.css HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 11:46:36] "GET /js/audio.js HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 11:46:36] "GET /js/effects.js HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 11:46:36] "GET /js/overview.js HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 11:46:36] "GET /js/deck.js HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 11:46:36] "GET /assets/pisjes_logo.png HTTP/1.1" 200 -

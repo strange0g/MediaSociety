@@ -11,6 +11,14 @@
   background: var(--paper);
   box-shadow: 14px 14px 0 var(--ink);
   position: relative;
+  --rot: -1.5deg;
+  transform: rotate(var(--rot));
+}
+
+.hero-card.snap-straight:hover,
+.hero-card.snap-straight:focus-visible {
+  transform: rotate(0deg) translateY(-6px) scale(1.02) !important;
+  box-shadow: 10px 10px 0px var(--ink) !important;
 }
 
 .hero-crest-badge {
@@ -95,8 +103,30 @@
   transform: rotate(var(--rot, 0deg));
 }
 
-.problem-card:hover {
-  transform: rotate(0deg) translateY(-8px) scale(1.03) !important;
+.problem-card {
+  background: #FFF5F5;
+  border: 2px solid var(--danger-red);
+  box-shadow: var(--shadow-sm);
+  border-radius: 6px;
+  padding: 14px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;
+  position: relative;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, border-color 0.2s ease;
+  --rot: -1.5deg;
+  transform: rotate(var(--rot));
+}
+
+.problem-card:nth-child(even) {
+  --rot: 1.8deg;
+}
+
+.problem-card:hover,
+.problem-card.snap-straight:hover,
+.problem-card.snap-straight:focus-visible {
+  transform: rotate(0deg) translateY(-6px) scale(1.02) !important;
   box-shadow: 10px 10px 0px var(--ink) !important;
   border-color: var(--ink);
   z-index: 30;
@@ -244,12 +274,19 @@
   justify-content: flex-start;
   gap: 4px;
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
-  transform: rotate(var(--rot, 0deg));
+  --rot: -1.5deg;
+  transform: rotate(var(--rot));
 }
 
-.roster-card:hover {
-  transform: rotate(0deg) translateY(-4px) scale(1.03) !important;
-  box-shadow: var(--shadow-md) !important;
+.roster-card:nth-child(even) {
+  --rot: 1.8deg;
+}
+
+.roster-card:hover,
+.roster-card.snap-straight:hover,
+.roster-card.snap-straight:focus-visible {
+  transform: rotate(0deg) translateY(-6px) scale(1.02) !important;
+  box-shadow: 10px 10px 0px var(--ink) !important;
   z-index: 20;
 }
 
