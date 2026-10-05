@@ -28,3 +28,44 @@ test('Slide 1 confirms Domain Conformance (EXECUTIVE OVERSIGHT, Principal & Depu
   assert.ok(htmlContent.includes('<div class="meta-sub">Principal & Deputy Head</div>'), 'Missing Principal & Deputy Head sub-label');
   assert.ok(!htmlContent.includes('<div class="meta-sub">Office of the Deputy Head & Principal</div>'), 'Old Deputy Head & Principal string should be removed');
 });
+
+test('Slide 1 maintains strictly responsive container bounds for 16:9 viewport layout', () => {
+  assert.ok(htmlContent.includes('<div style="margin: auto; max-width: 960px; width: 100%;">'), 'Missing expected container bounds wrapper');
+});
+
+test('Slide 1 visualizer widget contains exactly 5 bars (Boundary Test)', () => {
+  const visualizerIndex = htmlContent.indexOf('<div class="audio-visualizer');
+  assert.ok(visualizerIndex !== -1, 'Audio visualizer container not found for boundary test');
+
+  // Extract a chunk of HTML after the container starts
+  const chunk = htmlContent.substring(visualizerIndex, visualizerIndex + 300);
+  const bars = chunk.match(/<div class="bar"><\/div>/g);
+  assert.strictEqual(bars?.length, 5, `Expected exactly 5 bars, found ${bars?.length || 0}`);
+});
+
+test('Slide 1 hero card contains all 4 viewfinder corner accents (Edge-case/Regression Test)', () => {
+  assert.ok(htmlContent.includes('<div class="corner-bracket corner-tl"></div>'), 'Missing Top-Left corner bracket');
+  assert.ok(htmlContent.includes('<div class="corner-bracket corner-tr"></div>'), 'Missing Top-Right corner bracket');
+  assert.ok(htmlContent.includes('<div class="corner-bracket corner-bl"></div>'), 'Missing Bottom-Left corner bracket');
+  assert.ok(htmlContent.includes('<div class="corner-bracket corner-br"></div>'), 'Missing Bottom-Right corner bracket');
+});
+
+test('Slide 1 contains structurally complete SVG Charter Seal (Regression Test)', () => {
+  assert.ok(htmlContent.includes('<svg viewBox="0 0 100 100" class="charter-seal-svg">'), 'Missing SVG container with correct viewBox and class');
+  assert.ok(htmlContent.includes('<path id="curve"'), 'Missing path #curve definition');
+  assert.ok(htmlContent.includes('<textPath href="#curve" startOffset="0%">'), 'Missing textPath linking to #curve');
+  assert.ok(htmlContent.includes('class="charter-seal-container ambient-float-2"'), 'Missing ambient-float-2 class on charter container');
+});
+
+test('Slide 1 metadata grid structure contains exact brutalist tagging (Regression Test)', () => {
+  assert.ok(htmlContent.includes('<div class="hero-meta-grid">'), 'Missing hero-meta-grid container');
+  assert.ok(htmlContent.includes('<div class="meta-label">FOUNDING CO-HEADS</div>'), 'Missing FOUNDING CO-HEADS column');
+  assert.ok(htmlContent.includes('<div class="meta-label">EXECUTIVE OVERSIGHT</div>'), 'Missing EXECUTIVE OVERSIGHT column');
+  assert.ok(htmlContent.includes('<div class="meta-label">STATUS // VERIFICATION</div>'), 'Missing STATUS // VERIFICATION column');
+});
+
+test('Slide 1 contains Hero Crest Badge with correct CSS variables (Regression Test)', () => {
+  assert.ok(htmlContent.includes('<div class="hero-crest-badge ambient-float-1">'), 'Missing hero-crest-badge with ambient-float-1');
+  assert.ok(htmlContent.includes('style="background: var(--ink); color: var(--paper);"'), 'Missing tag-pill with ink/paper vars');
+  assert.ok(htmlContent.includes('style="background: var(--neon-yellow); color: var(--ink); font-weight: 900;"'), 'Missing tag-pill with neon-yellow/ink vars');
+});
