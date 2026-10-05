@@ -581,3 +581,229 @@
   color: white;
 }
 
+/* ==========================================================================
+   REC LIVE TIMECODE STOPWATCH
+   ========================================================================== */
+.rec-timer {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 800;
+  background: var(--ink);
+  color: var(--neon-yellow);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--ink);
+  box-shadow: 1.5px 1.5px 0 rgba(0,0,0,0.2);
+}
+
+/* ==========================================================================
+   CONFETTI CELEBRATION CANVAS
+   ========================================================================== */
+.confetti-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100000;
+}
+
+/* ==========================================================================
+   PRESENTER TALKING POINTS HUD DRAWER
+   ========================================================================== */
+.presenter-drawer {
+  position: absolute;
+  bottom: 56px;
+  left: 20px;
+  right: 20px;
+  background: var(--paper);
+  border: var(--border-thick);
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 -8px 0 rgba(0, 0, 0, 0.25), var(--shadow-lg);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(115%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 280px;
+  overflow: hidden;
+}
+
+.presenter-drawer.active {
+  transform: translateY(0);
+}
+
+.presenter-drawer-header {
+  background: var(--ink);
+  color: white;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: var(--border-thin);
+}
+
+.presenter-drawer-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.presenter-drawer-body {
+  padding: 12px 18px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.2fr;
+  gap: 14px;
+  background: #FFFDF5;
+  overflow-y: auto;
+}
+
+.presenter-section {
+  background: white;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  box-shadow: 3px 3px 0 var(--ink);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.presenter-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 900;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.presenter-text {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   KEYBOARD SHORTCUTS HELP MODAL
+   ========================================================================== */
+.help-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 11, 14, 0.82);
+  backdrop-filter: blur(8px);
+  z-index: 100001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  padding: 20px;
+}
+
+.help-modal.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.help-modal-card {
+  background: var(--paper);
+  border: var(--border-ultra);
+  box-shadow: 14px 14px 0 var(--ink);
+  border-radius: 8px;
+  max-width: 620px;
+  width: 100%;
+  padding: 24px;
+}
+
+.help-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: var(--border-thick);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.help-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.help-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FFFDF0;
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.help-item kbd {
+  background: var(--ink);
+  color: var(--neon-yellow);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 3px 8px;
+  border-radius: 3px;
+  box-shadow: 2px 2px 0 var(--neon-pink);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   EXECUTIVE PRINT / EXPORT STYLESHEET
+   ========================================================================== */
+@media print {
+  body {
+    background: white !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+  .deck-topbar, .deck-footer, .deck-progress-bar, .shutter-flash-overlay,
+  .overview-modal, .closing-finale-overlay, .presenter-drawer, .help-modal {
+    display: none !important;
+  }
+  .presentation-viewport {
+    width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    aspect-ratio: auto !important;
+    overflow: visible !important;
+  }
+  .slides-stage {
+    overflow: visible !important;
+    height: auto !important;
+  }
+  .slide {
+    position: relative !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-bottom: 2px solid #ccc !important;
+  }
+  .step-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+

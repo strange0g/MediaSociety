@@ -40,6 +40,7 @@
         <div style="display: flex; align-items: center; gap: 8px;">
           <div class="rec-dot"></div>
           <span style="font-weight: 800; color: var(--danger-red); font-size: 0.76rem;">REC [●]</span>
+          <span class="rec-timer" id="recTimer">00:00</span>
         </div>
         <div class="eq-container" title="Audio Levels Active">
           <div class="eq-bar"></div>
@@ -51,9 +52,11 @@
       </div>
 
       <div class="topbar-right">
-        <button class="icon-control-btn" id="soundToggleBtn" title="Toggle Sound (M)"><i class="fa-solid fa-volume-high"></i></button>
-        <button class="icon-control-btn" id="overviewBtn" title="Contact Sheet / Filmstrip (O)"><i class="fa-solid fa-grip"></i></button>
-        <button class="icon-control-btn" id="fullscreenBtn" title="Fullscreen (F)"><i class="fa-solid fa-expand"></i></button>
+        <button class="icon-control-btn" id="soundToggleBtn" title="Toggle Audio Feedback [M]"><i class="fa-solid fa-volume-high"></i> SFX</button>
+        <button class="icon-control-btn" id="notesToggleBtn" title="Presenter Talking Points HUD [P]"><i class="fa-solid fa-note-sticky"></i> NOTES</button>
+        <button class="icon-control-btn" id="overviewBtn" title="Contact Sheet / Filmstrip [O]"><i class="fa-solid fa-grip"></i> OVERVIEW</button>
+        <button class="icon-control-btn" id="helpBtn" title="Keyboard Shortcuts [? / H]"><i class="fa-solid fa-keyboard"></i> HELP</button>
+        <button class="icon-control-btn" id="fullscreenBtn" title="Toggle Fullscreen [F]"><i class="fa-solid fa-expand"></i> [F]</button>
       </div>
     </header>
 
@@ -92,7 +95,7 @@
               <div>
                 <div class="meta-label">FOUNDING CO-HEADS</div>
                 <div class="meta-value">Raied Faisal & Eshaal Waseem</div>
-                <div class="meta-sub">A2-B6 & A2-G5 // Senior Batch</div>
+                <div class="meta-sub">A2-B4 & A2-G5 // Senior Batch</div>
               </div>
               <div>
                 <div class="meta-label">SUPERVISING BODY</div>
@@ -929,7 +932,7 @@
           <div class="roster-card lead step-reveal card-tilt-1 card-tilt-hover ambient-float-1" data-step="1">
             <span class="tag-pill" style="background: var(--ink); color: white; width: fit-content; font-size: 0.65rem;">FOUNDING CO-HEAD</span>
             <div style="font-family: var(--font-display); font-size: 1.08rem; font-weight: 800;">Raied Faisal</div>
-            <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; margin-top: 2px;">Class: A2-B6 // Male Head</div>
+            <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; margin-top: 2px;">Class: A2-B4 // Male Head</div>
           </div>
 
           <!-- Lead 2 -->
@@ -983,7 +986,7 @@
         </div>
 
         <div class="step-reveal bottom-banner" data-step="5" style="background: #FFFDF0; border: var(--border-thin);">
-          <span><i class="fa-solid fa-user-plus" style="color:var(--neon-orange)"></i> <strong>Dynamic Scale:</strong> Initial core group with open merit-based recruitment planned across other grade tiers.</span>
+          <span><i class="fa-solid fa-circle-info" style="color:var(--neon-orange)"></i> &nbsp;<strong>Official Footnote:</strong> <em>(Note: Additional student members are to be added; this is only the current list).</em> Initial core group with open merit-based recruitment planned across other grade tiers.</span>
           <span class="tag-pill" style="background: var(--ink); color:white;">EQUAL ACCESS</span>
         </div>
       </section>
@@ -1012,8 +1015,9 @@
             </div>
             <div class="bullet-point">
               <div class="point-icon"><i class="fa-solid fa-check"></i></div>
-              <span><strong>Open to Guidance:</strong> Student leadership is completely receptive to feedback, adjustments, and recommendations from school leadership.</span>
+              <span><strong>Open to Guidance:</strong> Student leadership is completely receptive to feedback, adjustments, and recommendations from the <strong>Deputy Head and Principal</strong>.</span>
             </div>
+            <div class="tag-pill" style="background: var(--neon-yellow); margin-top: 10px; border:none; width:fit-content;"><i class="fa-solid fa-handshake"></i> Collaborative Partnership</div>
           </div>
 
           <!-- Sign-Off Portal -->
@@ -1069,6 +1073,7 @@
          (Drops down from the top on completion)
          =================================================================== -->
     <div class="closing-finale-overlay" id="closingFinaleOverlay">
+      <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
       <div class="finale-curtain-card">
         <div class="finale-hazard-top"></div>
         
@@ -1107,6 +1112,66 @@
           <button class="finale-btn finale-btn-close" id="closeFinaleBtn">
             <i class="fa-solid fa-xmark"></i> CLOSE [ESC]
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         PRESENTER TALKING POINTS HUD DRAWER
+         (Toggled with 'P' key or NOTES button)
+         =================================================================== -->
+    <div class="presenter-drawer" id="presenterDrawer">
+      <div class="presenter-drawer-header">
+        <div class="presenter-drawer-title">
+          <span class="tag-pill" style="background: var(--neon-yellow); color: var(--ink);"><i class="fa-solid fa-note-sticky"></i> SPEAKER BRIEFING</span>
+          <span id="notesSlideTag" style="font-family: var(--font-mono); font-size: 0.82rem; font-weight: 800;">SLIDE 01 // MASTER SLATE</span>
+        </div>
+        <button class="icon-control-btn" id="closeNotesBtn" style="padding: 4px 10px; background: var(--neon-pink); color: white; border-color: white;">
+          <i class="fa-solid fa-xmark"></i> CLOSE [P]
+        </button>
+      </div>
+      <div class="presenter-drawer-body">
+        <div class="presenter-section">
+          <div class="presenter-section-label"><i class="fa-solid fa-bullhorn"></i> CORE TALKING POINT</div>
+          <p id="notesMainPoint" class="presenter-text"></p>
+        </div>
+        <div class="presenter-section">
+          <div class="presenter-section-label"><i class="fa-solid fa-shield-halved"></i> EXECUTIVE FOCUS FOR LEADERSHIP</div>
+          <p id="notesExecutiveFocus" class="presenter-text"></p>
+        </div>
+        <div class="presenter-section">
+          <div class="presenter-section-label"><i class="fa-solid fa-comments"></i> ANTICIPATED Q&A RESPONSE</div>
+          <p id="notesQA" class="presenter-text"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         KEYBOARD SHORTCUTS HELP MODAL
+         (Toggled with '?' / 'H' key or HELP button)
+         =================================================================== -->
+    <div class="help-modal" id="helpModal">
+      <div class="help-modal-card brutal-card">
+        <div class="help-modal-header">
+          <div style="display:flex; align-items:center; gap: 10px;">
+            <div class="tag-pill" style="background:var(--neon-yellow); color:var(--ink);"><i class="fa-solid fa-keyboard"></i> KEYBOARD HUD</div>
+            <h3 style="font-family:var(--font-display); font-size: 1.25rem;">PRESENTER CONTROLS</h3>
+          </div>
+          <button class="icon-control-btn" id="closeHelpBtn" style="background:var(--neon-pink); color:white;">
+            <i class="fa-solid fa-xmark"></i> [ESC]
+          </button>
+        </div>
+        <div class="help-grid">
+          <div class="help-item"><kbd>Space</kbd> / <kbd>→</kbd> / <kbd>Enter</kbd><span>Reveal Point / Next Slide</span></div>
+          <div class="help-item"><kbd>←</kbd> / <kbd>Backspace</kbd><span>Step Back / Previous Slide</span></div>
+          <div class="help-item"><kbd>O</kbd><span>Contact Sheet (Slide Overview)</span></div>
+          <div class="help-item"><kbd>P</kbd><span>Speaker Notes Drawer HUD</span></div>
+          <div class="help-item"><kbd>M</kbd><span>Toggle Procedural Audio SFX</span></div>
+          <div class="help-item"><kbd>F</kbd><span>Toggle Fullscreen Mode</span></div>
+          <div class="help-item"><kbd>R</kbd><span>Restart / Replay Presentation</span></div>
+          <div class="help-item"><kbd>?</kbd> / <kbd>H</kbd><span>Toggle This Help HUD</span></div>
+          <div class="help-item"><kbd>Home</kbd> / <kbd>End</kbd><span>First / Last Slide Jump</span></div>
+          <div class="help-item"><kbd>Esc</kbd><span>Close Active Overlay / Modal</span></div>
         </div>
       </div>
     </div>

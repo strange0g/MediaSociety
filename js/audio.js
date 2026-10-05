@@ -107,6 +107,49 @@ class DeckAudioEngine {
     osc.start(now);
     osc.stop(now + 0.22);
   }
+
+  /* Celebratory Fanfare Arpeggio (Grand Finale Celebration) */
+  playFanfare() {
+    if (this.isMuted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50]; // C Major arpeggio
+    const now = this.ctx.currentTime;
+    notes.forEach((freq, idx) => {
+      const startTime = now + idx * 0.065;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = idx === notes.length - 1 ? 'triangle' : 'sine';
+      osc.frequency.setValueAtTime(freq, startTime);
+      gain.gain.setValueAtTime(0.12, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + (idx === notes.length - 1 ? 0.6 : 0.22));
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + (idx === notes.length - 1 ? 0.6 : 0.22));
+    });
+  }
+
+  /* Smooth Air Whoosh (Transitions / Modals) */
+  playWhoosh() {
+    if (this.isMuted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(260, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.12);
+    gain.gain.setValueAtTime(0.07, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
 }
 
 window.deckAudio = new DeckAudioEngine();
