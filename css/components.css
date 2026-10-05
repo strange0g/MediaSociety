@@ -9,12 +9,12 @@
   border: var(--border-thick);
   box-shadow: var(--shadow-md);
   border-radius: 6px;
-  padding: 18px 20px;
+  padding: clamp(10px, 2vh, 18px) clamp(12px, 2vw, 20px);
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 10px;
+  gap: clamp(6px, 1.2vh, 10px);
   --rot: -1.5deg;
   transform: rotate(var(--rot));
 }
@@ -145,31 +145,31 @@
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-bottom: 8px;
+  gap: clamp(10px, 2vw, 18px);
+  margin-bottom: clamp(4px, 1vh, 8px);
 }
 
 .grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 8px;
+  gap: clamp(8px, 1.5vw, 16px);
+  margin-bottom: clamp(4px, 1vh, 8px);
 }
 
 .grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 8px;
+  gap: clamp(8px, 1.5vw, 14px);
+  margin-bottom: clamp(4px, 1vh, 8px);
 }
 
 /* Bullet Points with Punchy Sizing */
 .bullet-point {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 8px;
-  font-size: 0.88rem;
+  gap: clamp(6px, 1.2vw, 10px);
+  margin-bottom: clamp(4px, 1vh, 8px);
+  font-size: clamp(0.75rem, 1.5vh, 0.88rem);
   font-weight: 700;
   line-height: 1.42;
 }
@@ -263,7 +263,7 @@
 .pipeline-container {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
+  gap: clamp(6px, 1vw, 10px);
   position: relative;
   z-index: 2;
 }
@@ -273,12 +273,12 @@
   border: var(--border-thick);
   box-shadow: var(--shadow-sm);
   border-radius: 8px;
-  padding: 14px 12px;
-  min-height: 250px;
+  padding: clamp(8px, 1.5vh, 14px) clamp(6px, 1vw, 12px);
+  min-height: clamp(180px, 35vh, 250px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 6px;
+  gap: clamp(4px, 0.8vh, 6px);
   position: relative;
   transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, background 0.25s ease;
   overflow: hidden;
@@ -325,7 +325,7 @@
 
 .pipe-step-title {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: clamp(0.9rem, 2vh, 1.15rem);
   font-weight: 800;
   line-height: 1.15;
   color: var(--ink);
@@ -333,7 +333,7 @@
 }
 
 .pipe-step-desc {
-  font-size: 0.77rem;
+  font-size: clamp(0.65rem, 1.2vh, 0.77rem);
   font-weight: 600;
   line-height: 1.36;
   color: var(--ink-secondary);
@@ -344,13 +344,13 @@
   background: rgba(15, 16, 19, 0.035);
   border: 1.5px dashed rgba(15, 16, 19, 0.22);
   border-radius: 4px;
-  padding: 6px 8px;
-  margin-top: 6px;
+  padding: clamp(4px, 0.8vh, 6px) clamp(4px, 1vw, 8px);
+  margin-top: clamp(4px, 1vh, 6px);
 }
 
 .pipe-deliverable-label {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: clamp(0.55rem, 1vh, 0.62rem);
   font-weight: 800;
   color: var(--ink-muted);
   text-transform: uppercase;
@@ -359,7 +359,7 @@
 }
 
 .pipe-deliverable-val {
-  font-size: 0.74rem;
+  font-size: clamp(0.65rem, 1.2vh, 0.74rem);
   font-weight: 700;
   color: var(--ink);
   line-height: 1.25;
@@ -389,7 +389,7 @@
 .lifecycle-integrity-panel {
   display: grid;
   grid-template-columns: 1.35fr 1fr;
-  gap: 12px;
+  gap: clamp(8px, 1.5vw, 12px);
   align-items: stretch;
 }
 
@@ -413,10 +413,10 @@
 }
 
 .policy-card-content {
-  padding: 12px 16px;
+  padding: clamp(8px, 1.5vh, 12px) clamp(10px, 2vw, 16px);
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: clamp(8px, 1.5vw, 14px);
   flex: 1;
 }
 
@@ -440,7 +440,7 @@
   border: var(--border-thick);
   border-radius: 6px;
   box-shadow: var(--shadow-sm);
-  padding: 12px 16px;
+  padding: clamp(8px, 1.5vh, 12px) clamp(10px, 2vw, 16px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
