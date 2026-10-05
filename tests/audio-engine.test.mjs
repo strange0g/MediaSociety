@@ -89,6 +89,89 @@ test('DeckAudioEngine playStepClick does not error', (t) => {
   assert.notStrictEqual(engine.ctx, null);
 });
 
+
+test('DeckAudioEngine init uses webkitAudioContext fallback', (t) => {
+  const originalAudioContext = global.window.AudioContext;
+  delete global.window.AudioContext;
+
+  global.window.webkitAudioContext = class {
+    constructor() {
+      this.state = 'running';
+    }
+  };
+
+  const engine = new global.DeckAudioEngine();
+  engine.init();
+
+  assert.notStrictEqual(engine.ctx, null);
+  assert.strictEqual(engine.ctx.state, 'running');
+
+  // Restore
+  global.window.AudioContext = originalAudioContext;
+  delete global.window.webkitAudioContext;
+});
+
+test('DeckAudioEngine does not error if no AudioContext is available', (t) => {
+  const originalAudioContext = global.window.AudioContext;
+  delete global.window.AudioContext;
+  delete global.window.webkitAudioContext;
+
+  const engine = new global.DeckAudioEngine();
+  engine.init();
+  assert.strictEqual(engine.ctx, null);
+
+  // Should not throw on play methods
+  engine.playShutter();
+  engine.playStepClick();
+  engine.playStampSlam();
+  engine.playFanfare();
+  engine.playWhoosh();
+
+  // Restore
+  global.window.AudioContext = originalAudioContext;
+});
+
+test('DeckAudioEngine sound methods respect isMuted', (t) => {
+  const engine = new global.DeckAudioEngine();
+  engine.isMuted = true;
+  engine.init = () => { throw new Error("Should not be called"); };
+
+  // None of these should throw or call init
+  engine.playShutter();
+  engine.playStepClick();
+  engine.playStampSlam();
+  engine.playFanfare();
+  engine.playWhoosh();
+});
+
+test('DeckAudioEngine handles rapid sequential calls without crashing', (t) => {
+  const engine = new global.DeckAudioEngine();
+  engine.isMuted = false;
+
+  for (let i = 0; i < 50; i++) {
+    engine.playShutter();
+    engine.playStepClick();
+    engine.playStampSlam();
+    engine.playFanfare();
+    engine.playWhoosh();
+  }
+});
+
+test('DeckAudioEngine handles concurrency without error', async (t) => {
+  const engine = new global.DeckAudioEngine();
+  engine.isMuted = false;
+
+  const promises = [];
+  for (let i = 0; i < 20; i++) {
+    promises.push(new Promise(resolve => {
+      engine.playShutter();
+      engine.playFanfare();
+      resolve();
+    }));
+  }
+  await Promise.all(promises);
+});
+
 test('CSS Keyframes and Utility classes exist in css/animations.css', (t) => {
   const css = fs.readFileSync(path.join(process.cwd(), 'css/animations.css'), 'utf-8');
   assert.ok(css.includes('@keyframes floatDrift'), 'floatDrift keyframes exist');
@@ -110,4 +193,24 @@ test('CSS Custom Properties and Utilities exist in css/components.css and css/sl
 
   assert.ok(slides.includes('.hero-card'), 'hero-card styling present');
   assert.ok(slides.includes('--rot: -1.5deg') || slides.includes('--rot:-1.5deg'), 'Alternating rotations in slides');
+});
+
+
+test('CSS animations define specific cubic-bezier curves', (t) => {
+  const css = fs.readFileSync(path.join(process.cwd(), 'css/animations.css'), 'utf-8');
+  assert.ok(css.includes('cubic-bezier(0.34, 1.56, 0.64, 1)'), 'Contains snap-straight cubic-bezier curve');
+  assert.ok(css.includes('cubic-bezier(0.16, 1, 0.3, 1)'), 'Contains step-reveal entrance curve');
+});
+
+test('CSS animation utilities specify hover states with correct overrides', (t) => {
+  const css = fs.readFileSync(path.join(process.cwd(), 'css/animations.css'), 'utf-8');
+  assert.ok(css.includes('transform: rotate(0deg) translateY(-6px) scale(1.02) !important;'), 'snap-straight hover override is present');
+  assert.ok(css.includes('transform: rotate(0deg) translateY(-8px) scale(1.025) !important;'), 'card-tilt-hover override is present');
+});
+
+test('CSS ambient float utilities have proper transition delays', (t) => {
+  const css = fs.readFileSync(path.join(process.cwd(), 'css/animations.css'), 'utf-8');
+  assert.ok(css.includes('animation: ambientFloat 5.2s ease-in-out infinite -1.6s;'), 'ambient-float-2 delay is present');
+  assert.ok(css.includes('animation: ambientFloat 4.8s ease-in-out infinite -2.8s;'), 'ambient-float-3 delay is present');
+  assert.ok(css.includes('animation: ambientFloat 6.0s ease-in-out infinite -3.5s;'), 'ambient-float-4 delay is present');
 });
